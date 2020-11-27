@@ -13,7 +13,7 @@ class CreatePlanTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('plan_tags', function (Blueprint $table) {
+        Schema::create('plan_tag', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('tag_id');
             $table->unsignedBigInteger('plan_id');

@@ -14,7 +14,7 @@ class CreatePlanUsersTable extends Migration
     public function up()
     {
         // プランお気に入りテーブル
-        Schema::create('plan_users', function (Blueprint $table) {
+        Schema::create('plan_user', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('plan_id');
             $table->unsignedBigInteger('user_id');
