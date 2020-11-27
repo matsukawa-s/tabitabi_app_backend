@@ -19,9 +19,9 @@ class CreatePlansTable extends Migration
             $table->string('description');
             $table->date('start_day');
             $table->date('end_day');
-            $table->date('image_url');
+            $table->string('image_url');
             $table->integer('cost'); //参考費用
-            $table->boolean('is_opne'); //公開・非公開フラグ
+            $table->boolean('is_open'); //公開・非公開フラグ
             $table->integer('favorite_count')->default(0); //お気に入り数
             $table->integer('number_of_views')->default(0); //閲覧数
             $table->integer('referenced_number')->default(0); //参考数
