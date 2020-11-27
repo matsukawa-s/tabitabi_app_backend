@@ -18,6 +18,8 @@ class CreateSpotsTable extends Migration
             $table->string('place_id');
             $table->string('spot_name');
             $table->string('place_types');
+            $table->double('memory_latitube', 20, 14);
+            $table->double('memory_longitube', 20, 14);
             $table->string('image_url');
             $table->string('address');
             $table->timestamps();

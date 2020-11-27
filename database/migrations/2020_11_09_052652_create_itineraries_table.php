@@ -16,7 +16,7 @@ class CreateItinerariesTable extends Migration
         Schema::create('itineraries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('itinerary_order'); //行程番号
-            $table->integer('day'); //日程
+            $table->date('day'); //日程
             $table->unsignedBigInteger('plan_id');
             $table->timestamps();
 
