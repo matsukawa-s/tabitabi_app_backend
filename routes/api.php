@@ -31,3 +31,7 @@ Route::group(['prefix' => 'auth'],function(){
     Route::post('/register', 'UserController@register');
     Route::get('/logout', 'UserController@logout')->middleware('auth:api');
 });
+
+Route::group(['middleware' => 'auth:api'],function(){
+    Route::get('/get_user','UserController@getUser');
+});

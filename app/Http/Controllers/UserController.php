@@ -52,7 +52,7 @@ class UserController extends Controller
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         $success['token'] = $user->createToken('appToken')->accessToken;
-        
+
         return response()->json([
           'success' => true,
           'token' => $success,
@@ -79,5 +79,15 @@ class UserController extends Controller
           'message' => 'Unable to Logout'
         ]);
       }
+     }
+
+     /**
+      * ユーザーの取得
+      */
+     public function getUser()
+     {
+       $user = Auth::user();
+
+       return $user;
      }
 }
