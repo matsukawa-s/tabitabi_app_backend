@@ -25,3 +25,13 @@ Route::post('favoritePlan', 'SearchController@update');
 // Route::get('/sample', function () {
 //     return [1, 2, 3];
 // });
+
+Route::group(['prefix' => 'auth'],function(){
+    Route::post('/login', 'UserController@login');
+    Route::post('/register', 'UserController@register');
+    Route::get('/logout', 'UserController@logout')->middleware('auth:api');
+});
+
+Route::group(['middleware' => 'auth:api'],function(){
+    Route::get('/get_user','UserController@getUser');
+});
