@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FavoriteFolder extends Model
+class Prefectures extends Model
 {
     //
 }

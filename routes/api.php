@@ -17,6 +17,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('index', 'SearchController@index');
+Route::get('search/{id}', 'SearchController@search');
+Route::post('favoritePlan', 'SearchController@update');
+
+// Route::get('/search', 'SearchController@index');
+// Route::get('/sample', function () {
+//     return [1, 2, 3];
+// });
+
+Route::group(['prefix' => 'auth'],function(){
+    Route::post('/login', 'UserController@login');
+    Route::post('/register', 'UserController@register');
+    Route::get('/logout', 'UserController@logout')->middleware('auth:api');
+});
+
+Route::group(['middleware' => 'auth:api'],function(){
+    Route::get('/get_user','UserController@getUser');
+});
+
 Route::group(['prefix' => 'plan'], function(){
     Route::post('store', 'PlanController@addPlanData');
 });
@@ -24,4 +43,5 @@ Route::group(['prefix' => 'plan'], function(){
 Route::group(['prefix' => 'spot'], function(){
     Route::post('store', 'SpotController@addSpotData');
 });
+
 

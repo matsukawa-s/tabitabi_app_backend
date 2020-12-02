@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlanTagsTable extends Migration
+class CreatePlanSpotsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,21 @@ class CreatePlanTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('plan_tag', function (Blueprint $table) {
+        Schema::create('plan_spot', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('tag_id');
             $table->unsignedBigInteger('plan_id');
+            $table->unsignedBigInteger('spot_id');
             $table->timestamps();
 
-            $table->foreign('tag_id')
-                    ->references('id')
-                    ->on('tags')
-                    ->onDelete('cascade');
             $table->foreign('plan_id')
-                    ->references('id')
-                    ->on('plans')
-                    ->onDelete('cascade');
+                ->references('id')
+                ->on('plans')
+                ->onDelete('cascade');
+
+            $table->foreign('spot_id')
+                ->references('id')
+                ->on('spots')
+                ->onDelete('cascade');
         });
     }
 
@@ -37,6 +38,6 @@ class CreatePlanTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plan_tags');
+        Schema::dropIfExists('plan_spots');
     }
 }
