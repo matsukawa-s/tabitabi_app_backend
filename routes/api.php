@@ -35,3 +35,13 @@ Route::group(['prefix' => 'auth'],function(){
 Route::group(['middleware' => 'auth:api'],function(){
     Route::get('/get_user','UserController@getUser');
 });
+
+Route::group(['prefix' => 'plan'], function(){
+    Route::post('store', 'PlanController@addPlanData');
+});
+
+Route::group(['prefix' => 'spot'], function(){
+    Route::post('store', 'SpotController@addSpotData');
+});
+
+
