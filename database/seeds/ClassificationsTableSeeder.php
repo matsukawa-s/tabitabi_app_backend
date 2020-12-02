@@ -11,7 +11,7 @@ class ClassificationsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('prefectures')->insert([
+        DB::table('classifications')->insert([
             ['id' => 1, 'english_name' => 'accounting', 'japanese_name' => '会計事務所'],
             ['id' => 2, 'english_name' => 'airport', 'japanese_name' => '空港'],
             ['id' => 3, 'english_name' => 'amusement_park', 'japanese_name' => '遊園地'],
@@ -107,6 +107,7 @@ class ClassificationsTableSeeder extends Seeder
             ['id' => 93, 'english_name' => 'university', 'japanese_name' => '大学'],
             ['id' => 94, 'english_name' => 'veterinary_care', 'japanese_name' => '動物病院'],
             ['id' => 95, 'english_name' => 'zoo', 'japanese_name' => '動物園'],
+
         ]);
     }
 }
