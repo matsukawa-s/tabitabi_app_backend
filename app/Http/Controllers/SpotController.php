@@ -49,15 +49,23 @@ class SpotController extends Controller
 
         // スポットが登録されいなければ登録する
         if(is_null($input["spot_id"])){
-            $spot = Spot::create([
-                'place_id' => $input['place_id'],
-                'spot_name' => $input['name'],
-                'memory_latitube' => $input['lat'],
-                'memory_longitube' => $input['lng'],
-                'image_url' => $input['photo'],
-                'prefecture_id' => 1
-            ]);
-            $spot_id = $spot->id;
+            DB::transaction(function () {
+                // スポットを新規登録
+                $spot = Spot::create([
+                    'place_id' => $input['place_id'],
+                    'spot_name' => $input['name'],
+                    'memory_latitube' => $input['lat'],
+                    'memory_longitube' => $input['lng'],
+                    'image_url' => $input['photo'],
+                    'prefecture_id' => $input['prefecture_id']
+                ]);
+
+                // スポットのタイプを新規登録
+                // $spot_classification = 
+
+                // スポットIDを登録したIDに更新
+                $spot_id = $spot->id;
+            });
         }else{
             $spot_id = $input['spot_id'];
         }

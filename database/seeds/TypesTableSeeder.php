@@ -11,7 +11,7 @@ class ClassificationsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('classifications')->insert([
+        DB::table('types')->insert([
             ['id' => 1, 'english_name' => 'accounting', 'japanese_name' => '会計事務所'],
             ['id' => 2, 'english_name' => 'airport', 'japanese_name' => '空港'],
             ['id' => 3, 'english_name' => 'amusement_park', 'japanese_name' => '遊園地'],
