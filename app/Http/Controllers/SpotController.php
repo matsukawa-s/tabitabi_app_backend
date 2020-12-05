@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Spot; 
 use App\SpotUser;
@@ -10,14 +11,24 @@ use App\SpotUser;
 class SpotController extends Controller
 {
     /**
-     * ユーザーのお気に入りしているスポットを取得する
+     * ユーザーのお気に入りスポットを全て取得する
+     * 
+     * @param request
+     * @return json 
      */
     public function getAllFavorite(){
+        $user = Auth::user();
+        $favorite_spots_keys = SpotUser::select(['spot_id'])->where('user_id',$user->id)->get();
+        $spots = Spot::whereIn('id',$favorite_spots_keys)->get();
 
+        return $spots;
     }
 
     /**
      * ひとつのスポットがお気に入り登録されているかどうかを調べる
+     * 
+     * @param integer $id place_id
+     * @return json
      */
     public function getOneFavorite($id){
         $user = Auth::user();
@@ -42,6 +53,9 @@ class SpotController extends Controller
 
     /**
      * スポットのお気に入り登録と解除をする
+     * 
+     * @param request
+     * @return json
      */
     public function postFavoriteSpot(Request $request){
         $input = $request->all();
@@ -49,7 +63,7 @@ class SpotController extends Controller
 
         // スポットが登録されいなければ登録する
         if(is_null($input["spot_id"])){
-            DB::transaction(function () {
+            $spot_id = DB::transaction(function () use($input){
                 // スポットを新規登録
                 $spot = Spot::create([
                     'place_id' => $input['place_id'],
@@ -64,7 +78,7 @@ class SpotController extends Controller
                 // $spot_classification = 
 
                 // スポットIDを登録したIDに更新
-                $spot_id = $spot->id;
+                return $spot->id;
             });
         }else{
             $spot_id = $input['spot_id'];
@@ -87,12 +101,5 @@ class SpotController extends Controller
             'success' => true,
             'spot_id' => $spot_id,
         ],200);
-    }
-
-    /**
-     * スポットがすでにテーブルに存在するかチェックする
-     */
-    function checkExistSpots(){
-
     }
 }
