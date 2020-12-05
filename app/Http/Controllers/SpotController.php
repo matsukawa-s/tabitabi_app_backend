@@ -8,7 +8,6 @@ use Auth;
 use App\Spot; 
 use App\SpotUser;
 use Validator;
-use App\Spot;
 
 class SpotController extends Controller
 {
