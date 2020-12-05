@@ -39,3 +39,13 @@ Route::group(['middleware' => 'auth:api'],function(){
     Route::get('/getOneFavorite/{id}','SpotController@getOneFavorite');
     Route::post('/postFavoriteSpot','SpotController@postFavoriteSpot');
 });
+
+Route::group(['prefix' => 'plan'], function(){
+    Route::post('store', 'PlanController@addPlanData');
+});
+
+Route::group(['prefix' => 'spot'], function(){
+    Route::post('store', 'SpotController@addSpotData');
+});
+
+

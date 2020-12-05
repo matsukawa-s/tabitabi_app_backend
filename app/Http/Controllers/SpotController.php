@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Spot; 
 use App\SpotUser;
+use Validator;
+use App\Spot;
 
 class SpotController extends Controller
 {
@@ -102,4 +104,39 @@ class SpotController extends Controller
             'spot_id' => $spot_id,
         ],200);
     }
+
+        /**
+     * IDで指定したスポットを表示する
+     * 
+     * @param id spot_id
+     * @return json
+     */
+    public function getSpotGet($id){
+        $data = Spot::where('id',$id)->get();
+
+        return $data;
+    }
+
+    /**
+     * スポット登録
+     *
+     *@param request 
+     *@return json
+     */
+    public function addSpotData(Request $request){
+        $input = $request->all();
+
+        $plan = Spot::create([
+           'place_id' => $input['place_id'],
+           'spot_name' => $input['spot_name'],
+           'place_types' => $input['place_types'],
+           'latitube' => $input['latitube'],
+           'longitube' => $input['longitube'],
+           'image_url' => $input['longitube'],
+           'address' => $input['address'],
+        ]);
+
+        $id = $plan->id;
+        return $id;
+      }
 }

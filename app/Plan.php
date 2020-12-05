@@ -7,4 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     //
+
+    protected $fillable = [
+        "title",
+        "description",
+        "start_day",
+        "end_day",
+        "image_url",
+        "cost",
+        "is_open",
+        "favorite_count",
+        "number_of_views",
+        "referenced_number",
+        "user_id",
+    ];
 }
