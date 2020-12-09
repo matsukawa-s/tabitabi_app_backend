@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClassificationSpot extends Model
+class SpotType extends Model
 {
     //
 }

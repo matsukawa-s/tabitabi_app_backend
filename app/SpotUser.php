@@ -12,4 +12,8 @@ class SpotUser extends Model
      * @var string
      */
     protected $table = 'spot_user';
+    
+    protected $fillable = [
+        'spot_id','user_id'
+    ];
 }

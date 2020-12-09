@@ -29,6 +29,10 @@ Route::group(['prefix' => 'auth'],function(){
 
 Route::group(['middleware' => 'auth:api'],function(){
     Route::get('/get_user','UserController@getUser');
+    //SpotController
+    Route::get('/getAllFavorite','SpotController@getAllFavorite');
+    Route::get('/getOneFavorite/{id}','SpotController@getOneFavorite');
+    Route::post('/postFavoriteSpot','SpotController@postFavoriteSpot');
 });
 
 Route::group(['prefix' => 'plan'], function(){
