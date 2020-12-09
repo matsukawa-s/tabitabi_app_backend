@@ -23,6 +23,9 @@ class PlansTableSeeder extends Seeder
                 'cost' => 10000,
                 'is_open' => TRUE,
                 'user_id' => 1,
+                'favorite_count' => rand(1000000,1000000000),
+                'number_of_views' => rand(1,1000),
+                'referenced_number' => rand(1000,1000000),
             ]);
         }
     }
