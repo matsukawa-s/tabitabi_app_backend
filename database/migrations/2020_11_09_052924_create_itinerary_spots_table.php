@@ -17,12 +17,19 @@ class CreateItinerarySpotsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('cost'); //費用
             $table->unsignedBigInteger('itinerary_id');
+            $table->unsignedBigInteger('spot_id');
             $table->timestamps();
 
             $table->foreign('itinerary_id')
                     ->references('id')
                     ->on('itineraries')
                     ->onDelete('cascade');
+            
+            $table->foreign('spot_id')
+                    ->references('id')
+                    ->on('spots')
+                    ->onDelete('cascade');
+
         });
     }
 

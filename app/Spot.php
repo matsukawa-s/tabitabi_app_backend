@@ -11,9 +11,15 @@ class Spot extends Model
         "place_id",
         "spot_name",
         "place_types",
-        "latitube",
-        "longitube",
+        "memory_latitube",
+        "memory_longitube",
         "image_url",
         "address",
     ];
+
+    //hasMany設定
+    public function itinerarySpot()
+    {
+        return $this->hasMany('App\ItinerarySpot');
+    }
 }

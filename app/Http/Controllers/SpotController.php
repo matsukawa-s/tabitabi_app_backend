@@ -35,8 +35,8 @@ class SpotController extends Controller
            'place_id' => $input['place_id'],
            'spot_name' => $input['spot_name'],
            'place_types' => $input['place_types'],
-           'latitube' => $input['latitube'],
-           'longitube' => $input['longitube'],
+           'memory_latitube' => $input['latitube'],
+           'memory_longitube' => $input['longitube'],
            'image_url' => $input['longitube'],
            'address' => $input['address'],
         ]);
