@@ -17,14 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('index', 'SearchController@index');
-Route::get('search/{id}', 'SearchController@search');
+Route::post('index', 'SearchController@index');
+Route::post('search/{id}', 'SearchController@search');
 Route::post('favoritePlan', 'SearchController@update');
-
-// Route::get('/search', 'SearchController@index');
-// Route::get('/sample', function () {
-//     return [1, 2, 3];
-// });
 
 Route::group(['prefix' => 'auth'],function(){
     Route::post('/login', 'UserController@login');
@@ -34,6 +29,10 @@ Route::group(['prefix' => 'auth'],function(){
 
 Route::group(['middleware' => 'auth:api'],function(){
     Route::get('/get_user','UserController@getUser');
+    //SpotController
+    Route::get('/getAllFavorite','SpotController@getAllFavorite');
+    Route::get('/getOneFavorite/{id}','SpotController@getOneFavorite');
+    Route::post('/postFavoriteSpot','SpotController@postFavoriteSpot');
 });
 
 Route::group(['prefix' => 'plan'], function(){

@@ -15,24 +15,40 @@ class SearchController extends Controller
      * プランを全て取得する
      * @return json
      */
-    public function index(){
-        // $plans = \App\Plan::orderby("timestamps",'asc')->get();
-        $plans = Plan::get();
+    public function index(Request $request){
+        $plan_query = Plan::query();
+        $input = $request->all();
 
-        return response()->json($plans);
-        // return response()->json(['apple' => 'red', 'peach' => 'pink']);
-    }
-
-    public function search($id){
-        if (!empty($id)) {
-            $plans = Plan::where('title', 'LIKE', "%{$id}%")->get();
-        }else{
-            $plans = null;
+        // 並び替えのリクエストがあるとき
+        if(!empty($input['column'])){
+            $plan_query->orderBy($input['column'],$input['order'])->get();
         }
 
+        $plans = $plan_query->get();
+        
         return response()->json($plans);
     }
 
+    public function search(Request $request, $id)
+    {
+        $plan_query = Plan::query();
+        $input = $request->all();
+
+        // 検索キーワードで絞り込み
+        $plan_query->where('title', 'LIKE', "%{$id}%")->get();
+
+
+        // 並び替えのリクエストがあるとき
+        if (!empty($input['column'])) {
+            $plan_query->orderBy($input['column'], $input['order'])->get();
+        }
+
+        $plans = $plan_query->get();
+
+        return response()->json($plans);
+    }
+
+    // プランのお気に入り更新
     public function update(Request $request){
         // $plans = Plan::where('id',1)->get();
         // return response()->json($request->all());

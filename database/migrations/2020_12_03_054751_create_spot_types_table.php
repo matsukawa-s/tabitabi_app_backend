@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassificationSpotsTable extends Migration
+class CreateSpotTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateClassificationSpotsTable extends Migration
      */
     public function up()
     {
-        Schema::create('classification_spot', function (Blueprint $table) {
+        Schema::create('spot_type', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('classification_id');
+            $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('spot_id');
             $table->timestamps();
 
-            $table->foreign('classification_id')
+            $table->foreign('type_id')
                 ->references('id')
-                ->on('classifications')
+                ->on('types')
                 ->onDelete('cascade');
 
             $table->foreign('spot_id')
@@ -38,6 +38,6 @@ class CreateClassificationSpotsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classification_spots');
+        Schema::dropIfExists('spot_type');
     }
 }
