@@ -36,11 +36,27 @@ Route::group(['middleware' => 'auth:api'],function(){
 });
 
 Route::group(['prefix' => 'plan'], function(){
+    Route::get('get/{id}', 'PlanController@getPlanData');
     Route::post('store', 'PlanController@addPlanData');
+    Route::post('store/image', 'PlanController@uploadImage');
+});
+
+Route::group(['prefix' => 'itinerary'], function(){
+    Route::get('get/{id}', 'ItineraryController@getItineraryData');
+    Route::post('store', 'ItineraryController@addItineraryData'); 
+    Route::post('get/spot', 'ItinerarySpotController@getItinerarySpotData');
+    Route::post('get/traffic', 'ItineraryTrafficController@getItineraryTrafficData');
+    Route::post('get/note', 'ItinerarySpotController@getItineraryNoteData');
 });
 
 Route::group(['prefix' => 'spot'], function(){
     Route::post('store', 'SpotController@addSpotData');
+});
+
+Route::group(['prefix' => 'tag'], function(){
+    Route::get('get', 'TagController@getTag');
+    Route::get('get/{name}', 'TagController@searchTag');
+    Route::post('store', 'TagController@addTag');
 });
 
 
