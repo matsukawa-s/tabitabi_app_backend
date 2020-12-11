@@ -82,6 +82,25 @@ class UserController extends Controller
      }
 
      /**
+      * ユーザーのアイコンを追加・変更
+      */
+    public function userIconSave(Request $request){
+      $user = Auth::user();
+      if ($request->hasFile('image')) {
+        //画像を保存し、ユーザーテーブルにパスを保存する
+        $path = $request->file('image')->store('public/user_icons');
+        $user->icon_path = $path;
+        $user->save();
+
+        return response()->json([
+          'success' => true,
+          'path' => $path
+        ]);
+      }
+      return response()->json(['success' => false, ]);
+    }
+
+     /**
       * ユーザーの取得
       */
      public function getUser()

@@ -43,4 +43,8 @@ Route::group(['prefix' => 'spot'], function(){
     Route::post('store', 'SpotController@addSpotData');
 });
 
+Route::group(['prefix' => 'user','middleware' => 'auth:api'], function(){
+    Route::post('iconSave', 'UserController@userIconSave');
+});
+
 
