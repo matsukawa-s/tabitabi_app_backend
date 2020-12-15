@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlanTag extends Model
 {
-    /**
-     * モデルと関連しているテーブル
-     *
-     * @var string
-     */
-    protected $table = 'plan_tag';
+    protected $table = "plan_tag";
+
+    protected $fillable = [
+        "tag_id",
+        "plan_id"
+    ];
 }
