@@ -17,9 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('index', 'SearchController@index');
-Route::post('search/{id}', 'SearchController@search');
-Route::post('favoritePlan', 'SearchController@update');
+Route::group(['middleware' => 'auth:api'],function(){
+    Route::post('index', 'SearchController@index');
+    Route::post('search/{id}', 'SearchController@search');
+    Route::post('favoritePlan', 'SearchController@update');
+});
 
 Route::group(['prefix' => 'auth'],function(){
     Route::post('/login', 'UserController@login');
