@@ -44,7 +44,7 @@ Route::group(['prefix' => 'spot'], function(){
 });
 
 Route::group(['prefix' => 'user','middleware' => 'auth:api'], function(){
-    Route::post('iconSave', 'UserController@userIconSave');
+    Route::post('profileSave', 'UserController@userProfileSave');
 });
 
 

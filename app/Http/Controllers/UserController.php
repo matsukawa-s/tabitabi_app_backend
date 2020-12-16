@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use Auth;
 
@@ -84,20 +85,22 @@ class UserController extends Controller
      /**
       * ユーザーのアイコンを追加・変更
       */
-    public function userIconSave(Request $request){
+    public function userProfileSave(Request $request){
       $user = Auth::user();
-      if ($request->hasFile('image')) {
-        //画像を保存し、ユーザーテーブルにパスを保存する
-        $path = $request->file('image')->store('public/user_icons');
-        $user->icon_path = $path;
-        $user->save();
 
-        return response()->json([
-          'success' => true,
-          'path' => $path
-        ]);
-      }
-      return response()->json(['success' => false, ]);
+      DB::transaction(function () use($request,$user){
+        $input = json_decode($request->all()["data"]);
+        if ($request->hasFile('image')) {
+          //画像を保存し、ユーザーテーブルにパスを保存する
+          $path = $request->file('image')->store('public/user_icons');
+          $user->icon_path = basename($path);
+        }
+  
+        $user->name = $input->name;
+        $user->save();
+      });
+
+      return response()->json(['success' => true,]);
     }
 
      /**
