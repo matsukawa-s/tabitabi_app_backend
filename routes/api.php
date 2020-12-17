@@ -17,9 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('index', 'SearchController@index');
-Route::post('search/{id}', 'SearchController@search');
-Route::post('favoritePlan', 'SearchController@update');
+Route::group(['middleware' => 'auth:api'],function(){
+    Route::post('index', 'SearchController@index');
+    Route::post('search/{id}', 'SearchController@search');
+    Route::post('favoritePlan', 'SearchController@update');
+});
 
 Route::group(['prefix' => 'auth'],function(){
     Route::post('/login', 'UserController@login');
@@ -36,15 +38,32 @@ Route::group(['middleware' => 'auth:api'],function(){
 });
 
 Route::group(['prefix' => 'plan'], function(){
+    Route::get('get/{id}', 'PlanController@getPlanData');
     Route::post('store', 'PlanController@addPlanData');
+    Route::post('store/image', 'PlanController@uploadImage');
+});
+
+Route::group(['prefix' => 'itinerary'], function(){
+    Route::get('get/{id}', 'ItineraryController@getItineraryData');
+    Route::post('store', 'ItineraryController@addItineraryData'); 
+    Route::post('get/spot', 'ItinerarySpotController@getItinerarySpotData');
+    Route::post('get/traffic', 'ItineraryTrafficController@getItineraryTrafficData');
+    Route::post('get/note', 'ItinerarySpotController@getItineraryNoteData');
 });
 
 Route::group(['prefix' => 'spot'], function(){
     Route::post('store', 'SpotController@addSpotData');
 });
 
+<<<<<<< HEAD
 Route::group(['prefix' => 'user','middleware' => 'auth:api'], function(){
     Route::post('profileSave', 'UserController@userProfileSave');
+=======
+Route::group(['prefix' => 'tag'], function(){
+    Route::get('get', 'TagController@getTag');
+    Route::get('get/{name}', 'TagController@searchTag');
+    Route::post('store', 'TagController@addTag');
+>>>>>>> develop
 });
 
 
