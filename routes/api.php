@@ -55,6 +55,9 @@ Route::group(['prefix' => 'spot'], function(){
     Route::post('store', 'SpotController@addSpotData');
 });
 
+Route::group(['prefix' => 'user','middleware' => 'auth:api'], function(){
+    Route::post('profileSave', 'UserController@userProfileSave');
+});
 Route::group(['prefix' => 'tag'], function(){
     Route::get('get', 'TagController@getTag');
     Route::get('get/{name}', 'TagController@searchTag');
