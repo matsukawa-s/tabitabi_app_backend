@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Spot extends Model
 {
-    //
     protected $fillable = [
         "place_id",
         "spot_name",
@@ -22,4 +21,5 @@ class Spot extends Model
     {
         return $this->hasMany('App\ItinerarySpot');
     }
+
 }
