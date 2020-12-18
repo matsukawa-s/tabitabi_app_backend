@@ -40,6 +40,7 @@ Route::group(['prefix' => 'plan'], function(){
     Route::get('get/{id}', 'PlanController@getPlanData');
     Route::post('store', 'PlanController@addPlanData');
     Route::post('store/image', 'PlanController@uploadImage');
+    Route::post('update/date', 'PlanController@updatePlanDateTime');
 });
 
 Route::group(['prefix' => 'itinerary'], function(){
@@ -47,7 +48,7 @@ Route::group(['prefix' => 'itinerary'], function(){
     Route::post('store', 'ItineraryController@addItineraryData'); 
     Route::post('get/spot', 'ItinerarySpotController@getItinerarySpotData');
     Route::post('get/traffic', 'ItineraryTrafficController@getItineraryTrafficData');
-    Route::post('get/note', 'ItinerarySpotController@getItineraryNoteData');
+    Route::post('get/note', 'ItineraryNoteController@getItineraryNoteData');
 });
 
 Route::group(['prefix' => 'spot'], function(){
