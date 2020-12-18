@@ -20,7 +20,7 @@ class ItineraryController extends Controller
      * @return json
      */
     public function getItineraryData($id){
-        $data = Plan::where('plan_id',$id)->get();
+        $data = Itinerary::where('plan_id',$id)->get();
         return response()->json($data);
     }
 
@@ -37,8 +37,13 @@ class ItineraryController extends Controller
           'plan_id' => $input['plan_id'],
         ]);
 
-        $id = $iti->id;
+        $itidata = [];
+        $itidata = Itinerary::where('plan_id', $input['plan_id'])->get();
 
+        var_dump($itidata[0]["day"]);
+        
+        $id = $iti->id;
+        
         switch($input['type']){
             //スポット追加
             case 0:
@@ -47,7 +52,18 @@ class ItineraryController extends Controller
                     'itinerary_id' => $id,
                     'spot_id' => $input['spot_id'],
                 ]);
+
+                //index以下のitineraryOrderの値を1ふやす
+                for($i=0; $i<count($itidata); $i++){
+                    if($input['order']+1 < $itidata[$i]["itinerary_order"] &&  strcmp($input['day'],$itidata[$i]["day"]) == 0){
+                        $updateIti = Itinerary::find($itidata[$i]["id"]);
+                        $updateIti->itinerary_order = $itidata[$i]["itinerary_order"] + 1;
+                        $updateIti->save();
+                        var_dump($updateIti);
+                    }
+                }
                 break;
+            //交通追加    
             case 1:
                 $itiTraffic = ItineraryTraffic::create([
                     'traffic_class' => $input['tarric_class'],
@@ -66,5 +82,10 @@ class ItineraryController extends Controller
 
         return $id;
     }
+
+    /**
+     * 行程を並び替える
+    */
+    
 
 }

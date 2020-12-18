@@ -21,7 +21,7 @@ class ItinerarySpotController extends Controller
     {
         $ids = $request["ids"];
         $itiSpots = ItinerarySpot::whereIn('itinerary_id',$ids)->get();
-        $spots = Spot::all();
+        //$spots = Spot::all();
 
         $data = [];
         foreach($itiSpots as $itiSpot){

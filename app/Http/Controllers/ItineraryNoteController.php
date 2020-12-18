@@ -19,6 +19,7 @@ class ItineraryNoteController extends Controller
     public function getItineraryNoteData(Request $request)
     {
         $ids = $request["ids"];
+        $data = [];
         $data = ItineraryNote::whereIn('itinerary_id',$ids)->get();
 
         return response()->json($data);

@@ -30,7 +30,6 @@ class PlanController extends Controller
      * @return json
      */
 
-
     /**
      * 画像アップロード
      *  
@@ -99,6 +98,20 @@ class PlanController extends Controller
 
         return $id;
     }
+
+    /**
+     * 日付の更新
+     */
+    public function updatePlanDateTime(Request $request){
+        $input = $request->all();
+        $plan = Plan::find($request['id']);
+        $plan->start_day = $request['start_day'];
+        $plan->end_day = $request['end_day'];
+        $plan->save();
+
+        return $plan;
+    }
+
 
     function upFile($request){
         // バリデーションルール
