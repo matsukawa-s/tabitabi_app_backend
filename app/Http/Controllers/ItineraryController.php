@@ -63,6 +63,7 @@ class ItineraryController extends Controller
                     }
                 }
                 break;
+            //交通追加    
             case 1:
                 $itiTraffic = ItineraryTraffic::create([
                     'traffic_class' => $input['tarric_class'],
@@ -81,5 +82,10 @@ class ItineraryController extends Controller
 
         return $id;
     }
+
+    /**
+     * 行程を並び替える
+    */
+    
 
 }
