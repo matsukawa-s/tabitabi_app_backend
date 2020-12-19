@@ -14,6 +14,7 @@ class Spot extends Model
         "memory_longitube",
         "image_url",
         "address",
+        "prefecture_id"
     ];
 
     //hasMany設定
