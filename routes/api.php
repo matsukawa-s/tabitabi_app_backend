@@ -52,6 +52,12 @@ Route::group(['prefix' => 'itinerary'], function(){
     Route::post('get/note', 'ItineraryNoteController@getItineraryNoteData');
 });
 
+Route::group(['prefix' => 'planspot'], function(){
+    Route::get('get/{id}', 'PlanSpotController@getPlanSpotData');
+    Route::post('store', 'PlanSpotController@addPlanSpotData');
+    Route::get('delete/{id}', 'PlanSpotController@deletePlanSpotData');
+});
+
 Route::group(['prefix' => 'spot'], function(){
     Route::post('store', 'SpotController@addSpotData');
 });

@@ -12,4 +12,15 @@ class PlanSpot extends Model
      * @var string
      */
     protected $table = 'plan_spot';
+
+    protected $fillable = [
+        "plan_id",
+        "spot_id",
+    ];
+
+    //belongsTo設定
+    public function spot()
+    {
+        return $this->belongsTo('App\Spot');
+    }
 }
