@@ -23,4 +23,9 @@ class Spot extends Model
         return $this->hasMany('App\ItinerarySpot');
     }
 
+    public function types()
+    {
+        return $this->hasMany('App\Type');
+    }
+
 }

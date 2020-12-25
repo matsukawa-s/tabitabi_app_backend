@@ -59,6 +59,7 @@ Route::group(['prefix' => 'planspot'], function(){
 });
 
 Route::group(['prefix' => 'spot'], function(){
+    Route::get('get/types','SpotController@getSpotTypes');
     Route::post('store', 'SpotController@addSpotData');
 });
 
