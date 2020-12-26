@@ -30,7 +30,6 @@ Route::group(['prefix' => 'auth'],function(){
 });
 
 Route::group(['middleware' => 'auth:api'],function(){
-    Route::get('/get_user','UserController@getUser');
     //SpotController
     Route::get('/getAllFavorite','SpotController@getAllFavorite');
     Route::get('/getOneFavorite/{id}','SpotController@getOneFavorite');
@@ -64,7 +63,9 @@ Route::group(['prefix' => 'spot'], function(){
 });
 
 Route::group(['prefix' => 'user','middleware' => 'auth:api'], function(){
+    Route::get('/get_user','UserController@getUser');
     Route::post('profileSave', 'UserController@userProfileSave');
+    // Route::get('getPlans','UserController@getPlans');
 });
 Route::group(['prefix' => 'tag'], function(){
     Route::get('get', 'TagController@getTag');

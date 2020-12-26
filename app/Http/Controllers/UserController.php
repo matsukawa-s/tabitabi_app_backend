@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\User;
+use App\Plan;
+use App\PlanUser;
 use Auth;
 
 
@@ -103,13 +105,29 @@ class UserController extends Controller
       return response()->json(['success' => true,]);
     }
 
-     /**
-      * ユーザーの取得
-      */
-     public function getUser()
+    /**
+     * ユーザー情報の取得
+     * 作成したプランの取得
+     * 参加しているプランの取得
+     * 
+     * @return json
+     */
+
+    public function getUser()
      {
        $user = Auth::user();
 
-       return $user;
-     }
+       //ユーザーの作成したプランを取得
+       $my_plans = Plan::all();
+
+       //ユーザーの参加しているプランを取得
+       $participating_plans_keys = PlanUser::select(['plan_id'])->where('user_id',$user->id)->get();
+       $participating_plans = Plan::whereIn('id',$participating_plans_keys)->get();
+
+      return response()->json([
+        'user' => $user,
+        'my_plans' => $my_plans,
+        'participating_plans' => $participating_plans,
+      ]);
+    }
 }
