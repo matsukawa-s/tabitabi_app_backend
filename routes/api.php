@@ -67,6 +67,11 @@ Route::group(['prefix' => 'user','middleware' => 'auth:api'], function(){
     Route::post('profileSave', 'UserController@userProfileSave');
     // Route::get('getPlans','UserController@getPlans');
 });
+
+Route::group(['prefix' => 'top','middleware' => 'auth:api'], function(){
+    Route::get('/','TopController@index');
+});
+
 Route::group(['prefix' => 'tag'], function(){
     Route::get('get', 'TagController@getTag');
     Route::get('get/{name}', 'TagController@searchTag');
