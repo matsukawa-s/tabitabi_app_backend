@@ -46,7 +46,9 @@ Route::group(['prefix' => 'plan'], function(){
 
 Route::group(['prefix' => 'itinerary'], function(){
     Route::get('get/{id}', 'ItineraryController@getItineraryData');
-    Route::post('store', 'ItineraryController@addItineraryData'); 
+    Route::post('store', 'ItineraryController@addItineraryData');
+    Route::get('delete/{itiId}/{dataType}', 'ItineraryController@deleteItineraryData');  
+    Route::get('rearrange/{itiId}/{order}/{dataType}', 'ItineraryController@rearrangeItineraryData');
     Route::post('get/spot', 'ItinerarySpotController@getItinerarySpotData');
     Route::post('get/traffic', 'ItineraryTrafficController@getItineraryTrafficData');
     Route::post('get/note', 'ItineraryNoteController@getItineraryNoteData');
