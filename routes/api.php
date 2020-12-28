@@ -30,7 +30,6 @@ Route::group(['prefix' => 'auth'],function(){
 });
 
 Route::group(['middleware' => 'auth:api'],function(){
-    Route::get('/get_user','UserController@getUser');
     //SpotController
     Route::get('/getAllFavorite','SpotController@getAllFavorite');
     Route::get('/getOneFavorite/{id}','SpotController@getOneFavorite');
@@ -61,12 +60,20 @@ Route::group(['prefix' => 'planspot'], function(){
 });
 
 Route::group(['prefix' => 'spot'], function(){
+    Route::get('get/types','SpotController@getSpotTypes');
     Route::post('store', 'SpotController@addSpotData');
 });
 
 Route::group(['prefix' => 'user','middleware' => 'auth:api'], function(){
+    Route::get('/get_user','UserController@getUser');
     Route::post('profileSave', 'UserController@userProfileSave');
+    // Route::get('getPlans','UserController@getPlans');
 });
+
+Route::group(['prefix' => 'top','middleware' => 'auth:api'], function(){
+    Route::get('/','TopController@index');
+});
+
 Route::group(['prefix' => 'tag'], function(){
     Route::get('get', 'TagController@getTag');
     Route::get('get/{name}', 'TagController@searchTag');

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Spot; 
 use App\SpotUser;
+use App\Type;
+use App\SpotType;
 use Validator;
 
 class SpotController extends Controller
@@ -21,7 +23,21 @@ class SpotController extends Controller
         $user = Auth::user();
         $favorite_spots_keys = SpotUser::select(['spot_id'])->where('user_id',$user->id)->get();
         $spots = Spot::whereIn('id',$favorite_spots_keys)->get();
+        $spot_type = SpotType::whereIn('spot_id',$favorite_spots_keys)->orderby('spot_id')->get()->toArray();
 
+        $tmp = array();
+        foreach($spots as $spot){  
+            // $keys = array_keys($spot_type,$value->id);
+            foreach($spot_type as $value){
+                if($value["spot_id"] === $spot->id){
+                    array_push($tmp,$value["type_id"]);
+                }
+            }
+            $spot["types"] = $tmp;
+            $tmp = [];
+        }
+
+        // return $spot_type;
         return $spots;
     }
 
@@ -76,7 +92,14 @@ class SpotController extends Controller
                 ]);
 
                 // スポットのタイプを新規登録
-                // $spot_classification = 
+                $types = Type::whereIn('english_name',$input["types"])->get();
+
+                foreach($types as $type){
+                    SpotType::create([
+                        "type_id" => $type->id,
+                        "spot_id" => $spot->id
+                    ]);
+                }
 
                 // スポットIDを登録したIDに更新
                 return $spot->id;
@@ -102,6 +125,15 @@ class SpotController extends Controller
             'success' => true,
             'spot_id' => $spot_id,
         ],200);
+    }
+
+    /**
+     * 場所タイプの情報を取得する
+     */
+    public function getSpotTypes(){
+        $types = Type::all();
+        // $types = Spot::with('types')->get();
+        return $types;
     }
 
         /**
