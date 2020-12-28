@@ -39,8 +39,6 @@ class ItineraryController extends Controller
 
         $itidata = [];
         $itidata = Itinerary::where('plan_id', $input['plan_id'])->get();
-
-        var_dump($itidata[0]["day"]);
         
         $id = $iti->id;
         
@@ -53,20 +51,22 @@ class ItineraryController extends Controller
                     'spot_id' => $input['spot_id'],
                 ]);
 
-                //index以下のitineraryOrderの値を1ふやす
-                for($i=0; $i<count($itidata); $i++){
-                    if($input['order']+1 < $itidata[$i]["itinerary_order"] &&  strcmp($input['day'],$itidata[$i]["day"]) == 0){
-                        $updateIti = Itinerary::find($itidata[$i]["id"]);
-                        $updateIti->itinerary_order = $itidata[$i]["itinerary_order"] + 1;
+                foreach ($itidata as $value) {
+                    if($input['order'] <= $value["itinerary_order"] && strcmp($input['day'], $value["day"]) == 0 && $id != $value["id"]){
+                        $order = $value["itinerary_order"] + 1;
+                        $updateIti = Itinerary::find($value["id"]);
+                        $updateIti->itinerary_order = $order;
                         $updateIti->save();
-                        var_dump($updateIti);
+                        //var_dump("laravel id : " . (string)$value["id"] . " : " . (string)$order);
+                        //var_dump($value["itinerary_order"] + 1);
+                        //var_dump($updateIti);
                     }
                 }
                 break;
             //交通追加    
             case 1:
                 $itiTraffic = ItineraryTraffic::create([
-                    'traffic_class' => $input['tarric_class'],
+                    'traffic_class' => $input['traffic_class'],
                     'travel_time' => $input['travel_time'],
                     'traffic_cost' => $input['traffic_cost'],
                     'itinerary_id' => $id,
@@ -80,12 +80,91 @@ class ItineraryController extends Controller
                 break;
         }
 
-        return $id;
+        return $itiTraffic;
     }
 
     /**
      * 行程を並び替える
     */
-    
+    public function rearrangeItineraryData($itiId, $order, $dataType){
+        
+        //移動するitineraryData
+        $data = Itinerary::find($itiId);
+        
+        //スポットのとき
+        if($dataType == 0){
+            $itiDatas = Itinerary::where('plan_id', $data["plan_id"])->where('day', "=" , $data["day"])->get();
+            //並び替え
+            foreach ($itiDatas as $itiData) {
+                if($data["itinerary_order"] > $order){
+                    //下から上
+                    if($itiData["itinerary_order"] >= $order && $itiData["itinerary_order"] < $data["itinerary_order"]){
+                        $updateIti = Itinerary::find($itiData["id"]);
+                        $updateIti->itinerary_order = $updateIti["itinerary_order"] + 1;
+                        $updateIti->save();
+                    }
+                }else{
+                    //上から下
+                    if($itiData["itinerary_order"] <= $order && $itiData["itinerary_order"] > $data["itinerary_order"]){
+                        $updateIti = Itinerary::find($itiData["id"]);
+                        $updateIti->itinerary_order = $updateIti["itinerary_order"] - 1;
+                        $updateIti->save();
+                    }
+                }
+            }
+        }
+
+        $updateIti = Itinerary::find($itiId);
+        $updateIti->itinerary_order = $order;
+        $updateIti->save();
+
+        return response()->json($itiDatas);
+    }
+
+    /**
+     * 行程を削除する
+     */
+    public function deleteItineraryData($itiId, $dataType){
+        $deleteIti = Itinerary::find($itiId);
+
+        switch($dataType){
+            //スポットのとき
+            case 0:
+                //itinerarySpotの削除
+                $itiSpot = ItinerarySpot::where('itinerary_id', "=", $deleteIti["id"])->first();
+                var_dump($itiSpot);
+                $itiSpot->delete();
+                
+                //itineraryの順番の変更
+                $itiDatas = [];
+                $itiDatas = Itinerary::where('plan_id', $deleteIti["plan_id"])->where('day', "=" , $deleteIti["day"])->get();
+                
+                foreach($itiDatas as $itiData){
+                    if($itiData['itinerary_order'] > $deleteIti['itinerary_order']){
+                        $updateIti = Itinerary::find($itiData["id"]);
+                        $updateIti->itinerary_order = $updateIti["itinerary_order"] - 1;
+                        $updateIti->save();
+                    }
+                }
+            break;
+            //交通のとき
+            case 1:
+                //itineraryTrafficの削除
+                $itiTraffic = ItineraryTraffic::where('itinerary_id', $deleteIti["id"])->first();
+                $itiTraffic->delete();
+            break;
+            //メモのとき
+            case 2:
+                //itineraryNoteの削除 
+                $itiNote = ItineraryNote::where('itinerary_id', $deleteIti["id"])->first();
+                $itiTraffic->delete();
+            break;   
+        }
+
+        $deleteIti->delete();
+
+        return $deleteIti;
+    }
+
 
 }
