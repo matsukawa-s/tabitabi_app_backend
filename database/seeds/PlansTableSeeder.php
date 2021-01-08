@@ -15,6 +15,7 @@ class PlansTableSeeder extends Seeder
     {
         for($i = 0;$i < 20;$i++){
             DB::table('plans')->insert([
+                'plan_code' => $i,
                 'title' => 'title'.$i,
                 'description' => 'description'.$i,
                 'start_day' => '2020-1-1',

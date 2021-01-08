@@ -9,6 +9,7 @@ class Plan extends Model
     //
 
     protected $fillable = [
+        "plan_code",
         "title",
         "description",
         "start_day",
