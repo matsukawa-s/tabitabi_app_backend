@@ -76,6 +76,7 @@ class PlanController extends Controller
         // }
 
         $plan = Plan::create([
+          'plan_code' => uniqid("tb-"), 
           'title' => $input['title'],
           'description' => $input['description'],
           'start_day' => $input['start_day'],
