@@ -16,7 +16,7 @@ class CreateItineraryTrafficTable extends Migration
         Schema::create('itinerary_traffic', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('traffic_class'); //交通区分
-            $table->integer('travel_time'); //交通区分
+            $table->string('travel_time'); //交通区分
             $table->integer('traffic_cost'); //交通区分
             $table->unsignedBigInteger('itinerary_id');
             $table->timestamps();
