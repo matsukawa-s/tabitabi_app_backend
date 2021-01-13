@@ -22,4 +22,8 @@ class Plan extends Model
         "referenced_number",
         "user_id",
     ];
+
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
 }

@@ -18,7 +18,37 @@ class PlanController extends Controller
      * @return json
      */
     public function getPlanData($id){
-        $data = Plan::where('id',$id)->get();
+        $plan = Plan::where('id',$id)->first();
+
+        $data = [];
+
+
+        //var_dump($user);
+
+        $userId = Auth::id();
+        $userFlag = 0;
+        if($userId == $plan->user_id){
+            $userFlag = 1;
+        }
+        
+        $data [] = [
+            'id' => $plan->id,
+            'title' => $plan->title,
+            'description' => $plan->description,
+            'start_day' => $plan->start_day,
+            'end_day' => $plan->end_day,
+            'image_url' => $plan->image_url,
+            'cost' => $plan->cost,
+            'is_open' => $plan->is_open,
+            'favorite_count' => $plan->favorite_count,
+            'number_of_views' => $plan->numver_of_views,
+            'referenced_number' => $plan->referenced_number,
+            'user_id' => $plan->user_id,
+            'user_name' => $plan->user->name,
+            'user_icon_path' => $plan->user->icon_path,
+            'user_flag' => $userFlag,
+        ];
+
 
         return response()->json($data);
     }
@@ -62,7 +92,7 @@ class PlanController extends Controller
         $input = $request->all();
         //$input = json_decode($request['data']);
         //あとでuser_idとってくる
-        $user_id = 1;
+        $user_id = Auth::id();
 
         // if($request->hasFile('image')){
         //     $path ="aa";
