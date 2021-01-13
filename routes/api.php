@@ -36,14 +36,14 @@ Route::group(['middleware' => 'auth:api'],function(){
     Route::post('/postFavoriteSpot','SpotController@postFavoriteSpot');
 });
 
-Route::group(['prefix' => 'plan'], function(){
+Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::get('get/{id}', 'PlanController@getPlanData');
     Route::post('store', 'PlanController@addPlanData');
     Route::post('store/image', 'PlanController@uploadImage');
     Route::post('update/date', 'PlanController@updatePlanDateTime');
 });
 
-Route::group(['prefix' => 'itinerary'], function(){
+Route::group(['prefix' => 'itinerary','middleware' => 'auth:api'], function(){
     Route::get('get/{id}', 'ItineraryController@getItineraryData');
     Route::post('store', 'ItineraryController@addItineraryData');
     Route::get('delete/{itiId}/{dataType}', 'ItineraryController@deleteItineraryData');  
