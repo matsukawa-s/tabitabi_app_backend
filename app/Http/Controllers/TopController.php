@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Plan;
 use App\Spot;
+use App\SpotUser;
 use App\ItinerarySpot;
 
 class TopController extends Controller
@@ -14,9 +15,13 @@ class TopController extends Controller
     public function index(){
         // 今日のプラン取得
         $today = date("Y-m-d");
+
         $today_plans = Plan::where('user_id',Auth::id())
-            ->whereDate('start_day','>=',$today)
-            ->whereDate('end_day','<=',$today)->get();
+            ->whereDate('start_day','<=',$today)
+            ->whereDate('end_day','>=',$today)
+            ->get();
+
+        // return $today_plans;
 
         // 人気のプラン取得
         $popular_plans = Plan::select(DB::raw("*, favorite_count + number_of_views + referenced_number as score"))
@@ -25,7 +30,6 @@ class TopController extends Controller
                             ->get();
 
         // 人気のスポット取得
-        // $popular_spots = Spot::limit(10)->get();
         $popular_spots_keys = ItinerarySpot::select('spot_id')
             ->groupBy('spot_id')
             ->orderby(DB::raw('count(*)'),'desc')
@@ -42,6 +46,22 @@ class TopController extends Controller
         $popular_spots = Spot::whereIn('id', $popular_spots_keys)
             ->orderByRaw(DB::raw("FIELD(id, $popular_spots_order)"))
             ->get();
+
+        // スポットのお気に入り情報を取得
+        $spot_user = SpotUser::where('user_id',Auth::id())->get();
+
+        foreach($popular_spots as $value){
+            foreach($spot_user as $value2){
+                if($value->id == $value2->spot_id){
+                    $value['isLike'] = true;
+                    break;
+                }else{
+                    $value['isLike'] = false;
+                }
+            }
+        }
+
+        // return $popular_spots;
 
         // 最近見たプラン取得
 
