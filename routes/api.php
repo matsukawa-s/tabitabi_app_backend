@@ -49,6 +49,7 @@ Route::group(['prefix' => 'itinerary','middleware' => 'auth:api'], function(){
     Route::get('delete/{itiId}/{dataType}', 'ItineraryController@deleteItineraryData');  
     Route::get('rearrange/{itiId}/{order}/{spotOrder}/{dataType}', 'ItineraryController@rearrangeItineraryData');
     Route::post('get/spot', 'ItinerarySpotController@getItinerarySpotData');
+    Route::post('update/spot/date', 'ItinerarySpotController@updateDate');
     Route::post('get/traffic', 'ItineraryTrafficController@getItineraryTrafficData');
     Route::post('get/note', 'ItineraryNoteController@getItineraryNoteData');
 });

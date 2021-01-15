@@ -35,10 +35,31 @@ class ItinerarySpotController extends Controller
                 'longitube' => $itiSpot->spot->memory_longitube,
                 'image_url' => $itiSpot->spot->image_url,
                 'address' => $itiSpot->spot->address,
+                'start_date' => $itiSpot->start_date,
+                'end_date' => $itiSpot->end_date,
             ];
         }
 
         return response()->json($data);
+    }
+
+    /**
+     * 時間の更新
+     */
+    public function updateDate(Request $request){
+        $id = $request["id"];
+
+        $updateItiSpot= new \stdClass;
+
+        $updateItiSpot = ItinerarySpot::find($id);
+        var_dump($id);
+
+        $updateItiSpot->start_date = $request['start_date'];
+        $updateItiSpot->end_date = $request['end_date'];
+
+        $updateItiSpot->save();
+
+        return $updateItiSpot;
     }
 
 }

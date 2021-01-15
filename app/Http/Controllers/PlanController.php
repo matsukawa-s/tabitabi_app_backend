@@ -49,7 +49,6 @@ class PlanController extends Controller
             'user_flag' => $userFlag,
         ];
 
-
         return response()->json($data);
     }
 
