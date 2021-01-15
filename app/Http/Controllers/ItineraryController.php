@@ -159,5 +159,13 @@ class ItineraryController extends Controller
         return $deleteIti;
     }
 
+    //選択した日付の行程データを削除
+    public function deleteDateItineraryData($date){
+        $deleteItis = new Itinerary;
+        $deleteItis->where('day',$date)->delete();
+        
+        return response()->json($deleteItis);
+    }
+
 
 }
