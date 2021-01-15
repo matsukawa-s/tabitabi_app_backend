@@ -42,6 +42,7 @@ class ItineraryController extends Controller
         $itidata = Itinerary::where('plan_id', $input['plan_id'])->get();
         
         $id = $iti->id;
+        $ids[] = (string)$iti->id;
         
         switch($input['type']){
             //スポット追加
@@ -51,6 +52,7 @@ class ItineraryController extends Controller
                     'itinerary_id' => $id,
                     'spot_id' => $input['spot_id'],
                 ]);
+                $ids[] = (string)$itiSpot->id;
                 break;
             //交通追加    
             case 1:
@@ -60,12 +62,14 @@ class ItineraryController extends Controller
                     'traffic_cost' => $input['traffic_cost'],
                     'itinerary_id' => $id,
                 ]);
+                $ids[] = (string)$itiTraffic->id;
                 break;
             case 2:
                 $itiNote = ItineraryNote::create([
                     'memo' => $input['memo'],
                     'itinerary_id' => $id,
                 ]);
+                $ids[] = (string)$itiNote->id;
                 break;
         }
 
@@ -84,7 +88,7 @@ class ItineraryController extends Controller
             }
         }
 
-        return $iti["id"];
+        return $ids;
     }
 
     /**
@@ -107,16 +111,16 @@ class ItineraryController extends Controller
                          $updateIti->spot_order = $updateIti["spot_order"] + 1;
                     }
                     $updateIti->save();
-                }else{
-                    //上から下
-                    if($itiData["itinerary_order"] <= $order && $itiData["itinerary_order"] > $data["itinerary_order"]){
-                        $updateIti = Itinerary::find($itiData["id"]);
-                        $updateIti->itinerary_order = $updateIti["itinerary_order"] - 1;
-                        if($dataType == 0){
-                            $updateIti->spot_order = $updateIti["spot_order"] - 1;
-                        }
-                        $updateIti->save();
+                }
+            }else{  
+                //上から下
+                if($itiData["itinerary_order"] <= $order && $itiData["itinerary_order"] > $data["itinerary_order"]){
+                    $updateIti = Itinerary::find($itiData["id"]);
+                    $updateIti->itinerary_order = $updateIti["itinerary_order"] - 1;
+                    if($dataType == 0){
+                        $updateIti->spot_order = $updateIti["spot_order"] - 1;
                     }
+                    $updateIti->save();
                 }
             }
         }
@@ -135,28 +139,6 @@ class ItineraryController extends Controller
      */
     public function deleteItineraryData($itiId, $dataType){
         $deleteIti = Itinerary::find($itiId);
-
-        switch($dataType){
-            //スポットのとき
-            case 0:
-                //itinerarySpotの削除
-                $itiSpot = ItinerarySpot::where('itinerary_id', "=", $deleteIti["id"])->first();
-                //var_dump($itiSpot);
-                $itiSpot->delete();     
-            break;
-            //交通のとき
-            case 1:
-                //itineraryTrafficの削除
-                $itiTraffic = ItineraryTraffic::where('itinerary_id', $deleteIti["id"])->first();
-                $itiTraffic->delete();
-            break;
-            //メモのとき
-            case 2:
-                //itineraryNoteの削除 
-                $itiNote = ItineraryNote::where('itinerary_id', $deleteIti["id"])->first();
-                $itiTraffic->delete();
-            break; 
-        }
 
         //itineraryの順番の変更
         $itiDatas = [];
