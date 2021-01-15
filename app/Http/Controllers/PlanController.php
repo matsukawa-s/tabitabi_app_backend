@@ -33,6 +33,7 @@ class PlanController extends Controller
         
         $data [] = [
             'id' => $plan->id,
+            'plan_code' => $plan->plan_code,
             'title' => $plan->title,
             'description' => $plan->description,
             'start_day' => $plan->start_day,

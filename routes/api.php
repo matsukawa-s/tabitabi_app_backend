@@ -85,6 +85,7 @@ Route::group(['prefix' => 'tag'], function(){
 });
 
 Route::group(['prefix' => 'member','middleware' => 'auth:api'], function(){
+    Route::get('search/{code}','MemberController@searchJoinPlan');
     Route::post('store', 'MemberController@joinPlan');
 });
 

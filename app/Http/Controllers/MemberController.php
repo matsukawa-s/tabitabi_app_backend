@@ -10,6 +10,28 @@ use App\Plan;
 class MemberController extends Controller
 {
     /**
+     * 参加するプランを探す
+     */
+    public function searchJoinPlan($code){
+        $plan = Plan::with('user')->where('plan_code',$code)->first();
+        $is_exist = false;
+        $message = '';
+
+        if(isset($plan)){
+            $is_exist = true;
+        }else{
+            $is_exist = false;
+            $message = 'プランが見つかりませんでした';
+        }
+
+        return response()->json([
+            'is_exist' => $is_exist,
+            'plan' => $plan,
+            'message' => $message,
+        ]);
+    }
+
+    /**
      * プランに参加する
      */
     public function joinPlan(Request $request){
