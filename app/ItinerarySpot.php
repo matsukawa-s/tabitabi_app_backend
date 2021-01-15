@@ -12,6 +12,8 @@ class ItinerarySpot extends Model
         "cost",
         "itinerary_id",
         "spot_id",
+        "start_date",
+        "end_date"
     ];
 
     //belongsTo設定

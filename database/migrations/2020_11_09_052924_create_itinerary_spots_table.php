@@ -18,6 +18,8 @@ class CreateItinerarySpotsTable extends Migration
             $table->integer('cost'); //費用
             $table->unsignedBigInteger('itinerary_id');
             $table->unsignedBigInteger('spot_id');
+            $table->datetime('start_date')->nullable();
+            $table->datetime('end_date')->nullable();
             $table->timestamps();
 
             $table->foreign('itinerary_id')
