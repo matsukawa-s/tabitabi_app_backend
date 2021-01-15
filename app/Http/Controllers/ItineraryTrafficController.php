@@ -25,4 +25,18 @@ class ItineraryTrafficController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * 時間の更新
+     */
+    public function updateTime(Request $request){
+        $id = $request["id"];
+
+        $updateItiTraffic= new \stdClass;
+        $updateItiTraffic = ItineraryTraffic::find($id);
+        $updateItiTraffic->travel_time = $request["travel_time"];
+        $updateItiTraffic->save();
+
+        return $updateItiTraffic;
+    }
+
 }
