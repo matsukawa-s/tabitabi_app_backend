@@ -169,4 +169,8 @@ class PlanController extends Controller
         return $path;
     }
 
+    public function getFavoritePlans(){
+        return Auth::user()->plans()->get();
+    }
+
 }

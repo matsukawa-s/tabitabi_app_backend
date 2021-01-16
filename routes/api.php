@@ -41,6 +41,8 @@ Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::post('store', 'PlanController@addPlanData');
     Route::post('store/image', 'PlanController@uploadImage');
     Route::post('update/date', 'PlanController@updatePlanDateTime');
+    Route::get('favorite/get','PlanController@getFavoritePlans');
+    Route::post('favorite/delete','PlanController@deleteFavoritePlan');
 });
 
 Route::group(['prefix' => 'itinerary','middleware' => 'auth:api'], function(){
