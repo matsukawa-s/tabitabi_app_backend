@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Plan;
 use App\Spot;
+use App\Prefectures;
 use App\SpotUser;
 use App\ItinerarySpot;
 
@@ -61,15 +62,15 @@ class TopController extends Controller
             }
         }
 
-        // return $popular_spots;
-
-        // 最近見たプラン取得
+        // 都道府県ごとのスポットを取得
+        $prefectures_spots = Prefectures::with('spots')
+            ->whereIn('id',[1,13,26,27,47])->get();
 
         return response()->json([
             "today_plans" => $today_plans,
             "popular_plans" => $popular_plans,
             "popular_spots" => $popular_spots,
-            "plan_history" => [],
+            "prefectures_spots" => $prefectures_spots,
         ]);
     }
 }
