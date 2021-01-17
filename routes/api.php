@@ -43,6 +43,13 @@ Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::post('update/date', 'PlanController@updatePlanDateTime');
 });
 
+Route::group(['prefix' => 'photo','middleware' => 'auth:api'], function(){
+    Route::get('get/{id}', 'PhotoController@getPhotos');
+    Route::post('store', 'PhotoController@addPhotos');
+    Route::get('delete/{id}', 'PhotoController@deletePhoto');
+});
+
+
 Route::group(['prefix' => 'itinerary','middleware' => 'auth:api'], function(){
     Route::get('get/{id}', 'ItineraryController@getItineraryData');
     Route::post('store', 'ItineraryController@addItineraryData');
