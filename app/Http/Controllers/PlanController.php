@@ -164,6 +164,10 @@ class PlanController extends Controller
         return $plan;
     }
 
+    public function getFavoritePlans(){
+        return Auth::user()->plans()->get();
+    }
+
     /**
      * プランの削除
      * @param id plan_id
