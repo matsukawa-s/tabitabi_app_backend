@@ -38,21 +38,32 @@ Route::group(['middleware' => 'auth:api'],function(){
 
 Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::get('get/{id}', 'PlanController@getPlanData');
+    Route::get('delete/{id}', 'PlanController@deletePlan');
     Route::post('store', 'PlanController@addPlanData');
-    Route::post('store/image', 'PlanController@uploadImage');
+    Route::post('info/update', 'PlanController@updatePlan');
+    Route::post('update/open', 'PlanController@updateOpenPlan');
     Route::post('update/date', 'PlanController@updatePlanDateTime');
     Route::get('favorite/get','PlanController@getFavoritePlans');
     Route::post('favorite/delete','PlanController@deleteFavoritePlan');
 });
 
+Route::group(['prefix' => 'photo','middleware' => 'auth:api'], function(){
+    Route::get('get/{id}', 'PhotoController@getPhotos');
+    Route::post('store', 'PhotoController@addPhotos');
+    Route::get('delete/{id}', 'PhotoController@deletePhoto');
+});
+
+
 Route::group(['prefix' => 'itinerary','middleware' => 'auth:api'], function(){
     Route::get('get/{id}', 'ItineraryController@getItineraryData');
     Route::post('store', 'ItineraryController@addItineraryData');
     Route::get('delete/{itiId}/{dataType}', 'ItineraryController@deleteItineraryData');  
+    Route::get('day/delete/{date}', 'ItineraryController@deleteDateItineraryData');
     Route::get('rearrange/{itiId}/{order}/{spotOrder}/{dataType}', 'ItineraryController@rearrangeItineraryData');
     Route::post('get/spot', 'ItinerarySpotController@getItinerarySpotData');
     Route::post('update/spot/date', 'ItinerarySpotController@updateDate');
     Route::post('get/traffic', 'ItineraryTrafficController@getItineraryTrafficData');
+    Route::post('update/traffic/time', 'ItineraryTrafficController@updateTime');
     Route::post('get/note', 'ItineraryNoteController@getItineraryNoteData');
 });
 

@@ -24,4 +24,12 @@ class Plan extends Model
     public function user(){
         return $this->belongsTo('App\User');
     }
+
+    public function plantag(){
+        return $this->hasMany('App\PlanTag');
+    }
+
+    public function tag(){
+        return $this->belongsToMany('App\Tag');
+    }
 }

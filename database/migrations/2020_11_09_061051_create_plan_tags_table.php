@@ -19,10 +19,7 @@ class CreatePlanTagsTable extends Migration
             $table->unsignedBigInteger('plan_id');
             $table->timestamps();
 
-            $table->foreign('tag_id')
-                    ->references('id')
-                    ->on('tags')
-                    ->onDelete('cascade');
+            
             $table->foreign('plan_id')
                     ->references('id')
                     ->on('plans')

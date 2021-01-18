@@ -21,14 +21,23 @@ class PlanController extends Controller
         $plan = Plan::where('id',$id)->first();
 
         $data = [];
-
-
         //var_dump($user);
 
         $userId = Auth::id();
         $userFlag = 0;
         if($userId == $plan->user_id){
             $userFlag = 1;
+        }
+
+        $tags = [];
+        $tagId = [];
+        $tagData = $plan->tag;
+        $tagData2 = $plan->plantag;
+        foreach($tagData as $tag){
+            $tags [] = $tag["tag_name"];
+        }
+        foreach($tagData2 as $tag){
+            $tagId [] = $tag["id"];
         }
         
         $data [] = [
@@ -48,6 +57,8 @@ class PlanController extends Controller
             'user_name' => $plan->user->name,
             'user_icon_path' => $plan->user->icon_path,
             'user_flag' => $userFlag,
+            'tags' => $tags,
+            'tag_id' => $tagId,
         ];
 
         return response()->json($data);
@@ -60,27 +71,6 @@ class PlanController extends Controller
      * @return json
      */
 
-    /**
-     * 画像アップロード
-     *  
-    */ 
-    public function uploadImage(Request $request){
-        $path = "No!";
-        var_dump('bbbb');
-
-        if($request->hasFile('image')){
-            var_dump('aaaaa');
-            $path ="aa";
-            $path = $this->upFile($request);
-            if($path==false){
-                return response()->json([
-                    'status' => 400,
-                    'error' => '画像ファイルではありません'
-                ]);
-            }
-        }
-        return $path;
-    }
 
     /**
      * 予定登録
@@ -94,21 +84,9 @@ class PlanController extends Controller
         //あとでuser_idとってくる
         $user_id = Auth::id();
 
-        // if($request->hasFile('image')){
-        //     $path ="aa";
-        //     $path = $this->upFile($request['image']);
-        //     if($path==false){
-        //         return response()->json([
-        //             'status' => 400,
-        //             'error' => '画像ファイルではありません'
-        //         ]);
-        //     }
-        // }
-
         $plan = Plan::create([
           'plan_code' => uniqid("tb-"), 
           'title' => $input['title'],
-          'description' => $input['description'],
           'start_day' => $input['start_day'],
           'end_day' => $input['end_day'],
           'image_url' => isset($path) ? basename($path) : $input['image_url'],
@@ -143,34 +121,61 @@ class PlanController extends Controller
         return $plan;
     }
 
+    /**
+     * 公開設定の更新
+     */
+    public function updateOpenPlan(Request $request){
+        $plan = Plan::find($request['id']);
+        $plan->is_open = $request['is_open'];
+        $plan->save();
 
-    function upFile($request){
-        // バリデーションルール
-        $rules = [
-            'image' => 'image'//jpeg, png, bmp, gif, svg
-        ];
+        return $plan;
+    }
 
-        var_dump('1');
-        var_dump($request);
-        // return $request->all();
-        $validator = Validator::make($request->all(), $rules);
+    /**
+     * プランの更新
+     */
+    public function updatePlan(Request $request){
+        //タグが更新されているとき
+        if($request["tag_flg"] == 1){
+            //一旦タグ削除  
+            $deletetag = new PlanTag;
+            $deletetag->where('plan_id', $request['id'])->delete();
 
-        var_dump('2');
-        // バリデーションチェックを行う
-        if ($validator->fails()) {
-            return false;
+            //タグを登録
+            for($i=0; $i<count($request['tag_id']); $i++){
+                $plantag = PlanTag::create([
+                    'tag_id' => $request['tag_id'][$i],
+                    'plan_id' => $request['id']
+                ]); 
+            }
         }
-        var_dump('3');
-        //画像の保存処理（storage/public/diary_images）
-        $path = $request->file('image')->store('public/images');
-    
-        var_dump('4');
 
-        return $path;
+        //プランの更新
+        $plan = Plan::find($request["id"]);
+        $plan->title = $request['plan_title'];
+        $plan->image_url = $request['image_url'];
+        $plan->save();
+
+        return $plan;
     }
 
     public function getFavoritePlans(){
         return Auth::user()->plans()->get();
     }
+
+    /**
+     * プランの削除
+     * @param id plan_id
+     * @return json
+     */
+    public function deletePlan($id){
+        $plan = Plan::find($id);
+        $plan->delete();
+
+        return $plan;
+    }
+
+
 
 }
