@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Validator;
 use App\Plan;
 use App\PlanTag;
+use App\Itinerary;
+use App\ItinerarySpot;
+use App\ItineraryTraffic;
+use App\ItineraryNote;
 
 class PlanController extends Controller
 {
@@ -176,6 +180,84 @@ class PlanController extends Controller
         return $plan;
     }
 
+    /**
+     * プランのコピー
+     * @param id plan_id
+     */
+    public function copyPlan($id){
+        $user_id = Auth::id();
 
+        //コピー元のプラン取得
+        $plan = Plan::find($id);
+
+        //コピー先プラン作成
+        $newPlan = Plan::create([
+            'plan_code' => uniqid("tb-"), 
+            'title' => $plan->title,
+            'start_day' => $plan->start_day,
+            'end_day' => $plan->end_day,
+            'image_url' => $plan->image_url,
+            'cost' => $plan->cost,
+            'is_open' => 0,
+            'user_id' => $user_id,
+          ]
+        );
+
+        $newPlanID = $newPlan->id;
+
+        //タグをコピー
+        //コピー元タグを取得
+        $tags = PlanTag::where('plan_id', $id)->get();
+        foreach($tags as $tag){
+            $newTag = PlanTag::create([
+                'tag_id' => $tag->tag_id,
+                'plan_id' => $newPlanID,
+            ]);
+        }
+
+        //コピー元の行程取得
+        $itineraries = Itinerary::where('plan_id', $id)->get();
+        //コピー先行程作成
+        foreach($itineraries as $itinerary){
+            $newIti = Itinerary::create([
+                'itinerary_order' => $itinerary->itinerary_order,
+                'spot_order' => $itinerary->spot_order,
+                'day' => $itinerary->day,
+                'plan_id' => $newPlanID,
+            ]);
+
+            //スポットor交通orメモを取得する
+            $itiSpo = ItinerarySpot::where('itinerary_id', $itinerary->id)->first();
+            if(!is_null($itiSpo)){
+                $newItiSpo = ItinerarySpot::create([
+                    'cost' => $itiSpo->cost,
+                    'spot_id' => $itiSpo->spot_id,
+                    'itinerary_id' => $newIti->id,
+                    'start_date' => $itiSpo->start_date,
+                    'end_date' => $itiSpo->end_date,
+                ]);
+            }
+
+            $itiTra = ItineraryTraffic::where('itinerary_id', $itinerary->id)->first();
+            if(!is_null($itiTra)){
+                $newItiTra = ItineraryTraffic::create([
+                   'traffic_class' => $itiTra->traffic_class, 
+                   'travel_time' => $itiTra->travel_time,
+                   'traffic_cost' => $itiTra->traffic_cost,
+                   'itinerary_id' => $newIti->id,
+                ]);
+            }
+
+            $itiNote = ItineraryNote::where('itinerary_id', $itinerary->id)->first();
+            if(!is_null($itiNote)){
+                $newItiNote = ItineraryNote::create([
+                    'memo' => $itiNote->memo,
+                    'itinerary_id' => $newIti->id,
+                ]);
+            }
+        }
+        
+        return $newPlanID;
+    }
 
 }

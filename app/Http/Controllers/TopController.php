@@ -45,6 +45,7 @@ class TopController extends Controller
         $popular_spots_order = implode(',',$tmp);
 
         $popular_spots = Spot::whereIn('id', $popular_spots_keys)
+            ->where('prefecture_id','!=','48')
             ->orderByRaw(DB::raw("FIELD(id, $popular_spots_order)"))
             ->get();
 

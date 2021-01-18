@@ -177,11 +177,12 @@ class SpotController extends Controller
         $plan = Spot::create([
            'place_id' => $input['place_id'],
            'spot_name' => $input['spot_name'],
-           'place_types' => $input['place_types'],
+           //'place_types' => $input['place_types'],
            'memory_latitube' => $input['latitube'],
            'memory_longitube' => $input['longitube'],
-           'image_url' => $input['longitube'],
-           'address' => $input['address'],
+           'image_url' => $input['image_url'],
+           'prefecture_id' => $input['prefecture_id'],
+           //'address' => $input['address'],
         ]);
 
         $id = $plan->id;

@@ -45,6 +45,7 @@ Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::post('update/date', 'PlanController@updatePlanDateTime');
     Route::get('favorite/get','PlanController@getFavoritePlans');
     Route::post('favorite/delete','PlanController@deleteFavoritePlan');
+    Route::get('copy/{id}', 'PlanController@copyPlan');
 });
 
 Route::group(['prefix' => 'photo','middleware' => 'auth:api'], function(){

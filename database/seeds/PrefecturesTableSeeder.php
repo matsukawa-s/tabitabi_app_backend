@@ -60,6 +60,7 @@ class PrefecturesTableSeeder extends Seeder
             ['id' => 45, 'prefectures_name' => '宮崎県','image' => 'map-miyazaki.png'],
             ['id' => 46, 'prefectures_name' => '鹿児島県','image' => 'map-kagoshima.png'],
             ['id' => 47, 'prefectures_name' => '沖縄県','image' => 'map-okinawa.png'],
+            ['id' => 48, 'prefectures_name' => 'オリジナル','image' => 'map-osaka.png']
         ]);
     }
 }
