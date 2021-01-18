@@ -122,6 +122,17 @@ class PlanController extends Controller
     }
 
     /**
+     * 公開設定の更新
+     */
+    public function updateOpenPlan(Request $request){
+        $plan = Plan::find($request['id']);
+        $plan->is_open = $request['is_open'];
+        $plan->save();
+
+        return $plan;
+    }
+
+    /**
      * プランの更新
      */
     public function updatePlan(Request $request){
