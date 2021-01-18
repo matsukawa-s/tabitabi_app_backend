@@ -37,17 +37,21 @@ class TopController extends Controller
             ->limit(10)
             ->get();
 
-        $tmp = array();
-        foreach($popular_spots_keys as $value){
-            array_push($tmp,$value->spot_id);
+        if($popular_spots_keys->isEmpty()){
+            $popular_spots = [];
+        }else{
+            $tmp = array();
+            foreach($popular_spots_keys as $value){
+                array_push($tmp,$value->spot_id);
+            }
+    
+            $popular_spots_order = implode(',',$tmp);
+    
+            $popular_spots = Spot::whereIn('id', $popular_spots_keys)
+                ->where('prefecture_id','!=','48')
+                ->orderByRaw(DB::raw("FIELD(id, $popular_spots_order)"))
+                ->get();
         }
-
-        $popular_spots_order = implode(',',$tmp);
-
-        $popular_spots = Spot::whereIn('id', $popular_spots_keys)
-            ->where('prefecture_id','!=','48')
-            ->orderByRaw(DB::raw("FIELD(id, $popular_spots_order)"))
-            ->get();
 
         // スポットのお気に入り情報を取得
         $spot_user = SpotUser::where('user_id',Auth::id())->get();
