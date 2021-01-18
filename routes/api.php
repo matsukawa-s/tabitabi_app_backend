@@ -38,8 +38,9 @@ Route::group(['middleware' => 'auth:api'],function(){
 
 Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::get('get/{id}', 'PlanController@getPlanData');
+    Route::get('delete/{id}', 'PlanController@deletePlan');
     Route::post('store', 'PlanController@addPlanData');
-    Route::post('store/image', 'PlanController@uploadImage');
+    Route::post('info/update', 'PlanController@updatePlan');
     Route::post('update/date', 'PlanController@updatePlanDateTime');
 });
 
