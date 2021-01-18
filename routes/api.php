@@ -41,6 +41,7 @@ Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::get('delete/{id}', 'PlanController@deletePlan');
     Route::post('store', 'PlanController@addPlanData');
     Route::post('info/update', 'PlanController@updatePlan');
+    Route::post('update/open', 'PlanController@updateOpenPlan');
     Route::post('update/date', 'PlanController@updatePlanDateTime');
 });
 
