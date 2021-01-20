@@ -22,11 +22,9 @@ class TopController extends Controller
             ->whereDate('end_day','>=',$today)
             ->get();
 
-        // return $today_plans;
-
         // 人気のプラン取得
-        $popular_plans = Plan::select(DB::raw("*, favorite_count + number_of_views + referenced_number as score"))
-                            ->orderby(DB::raw("score"),'desc')
+        $popular_plans = Plan::OtherPeoplePlan()
+                            ->orderby(DB::raw("favorite_count + number_of_views + referenced_number"),'desc')
                             ->limit(10)
                             ->get();
 

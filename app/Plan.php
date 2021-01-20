@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Plan extends Model
 {
@@ -31,5 +32,9 @@ class Plan extends Model
 
     public function tag(){
         return $this->belongsToMany('App\Tag');
+    }
+
+    public function scopeOtherPeoplePlan($query){
+        return $query->where('user_id','<>',Auth::id());
     }
 }
