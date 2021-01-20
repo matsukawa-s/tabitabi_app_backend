@@ -118,10 +118,10 @@ class UserController extends Controller
        $user = Auth::user();
 
        //ユーザーの作成したプランを取得
-       $my_plans = Plan::all();
+       $my_plans = Plan::where('user_id',Auth::id())->orderby('id','desc')->get();
 
        //ユーザーの参加しているプランを取得
-       $participating_plans_keys = PlanUser::select(['plan_id'])->where('user_id',$user->id)->get();
+       $participating_plans_keys = PlanUser::select(['plan_id'])->where('user_id',Auth::id())->get();
        $participating_plans = Plan::whereIn('id',$participating_plans_keys)->get();
 
       return response()->json([

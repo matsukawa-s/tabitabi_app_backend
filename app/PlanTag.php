@@ -13,10 +13,7 @@ class PlanTag extends Model
         "plan_id"
     ];
 
-    //belongsTo設定
-    public function tag()
-    {
-        return $this->belongsTo('App\Tag');
+    public function tag(){
+        return $this->belongTo('App\Tag');
     }
-
 }

@@ -39,20 +39,35 @@ Route::group(['middleware' => 'auth:api'],function(){
     Route::post('/postFavoriteSpot','SpotController@postFavoriteSpot');
 });
 
-Route::group(['prefix' => 'plan'], function(){
+Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::get('get/{id}', 'PlanController@getPlanData');
+    Route::get('delete/{id}', 'PlanController@deletePlan');
     Route::post('store', 'PlanController@addPlanData');
-    Route::post('store/image', 'PlanController@uploadImage');
+    Route::post('info/update', 'PlanController@updatePlan');
+    Route::post('update/open', 'PlanController@updateOpenPlan');
     Route::post('update/date', 'PlanController@updatePlanDateTime');
+    Route::get('favorite/get','PlanController@getFavoritePlans');
+    Route::post('favorite/delete','PlanController@deleteFavoritePlan');
+    Route::get('copy/{id}', 'PlanController@copyPlan');
 });
 
-Route::group(['prefix' => 'itinerary'], function(){
+Route::group(['prefix' => 'photo','middleware' => 'auth:api'], function(){
+    Route::get('get/{id}', 'PhotoController@getPhotos');
+    Route::post('store', 'PhotoController@addPhotos');
+    Route::get('delete/{id}', 'PhotoController@deletePhoto');
+});
+
+
+Route::group(['prefix' => 'itinerary','middleware' => 'auth:api'], function(){
     Route::get('get/{id}', 'ItineraryController@getItineraryData');
     Route::post('store', 'ItineraryController@addItineraryData');
     Route::get('delete/{itiId}/{dataType}', 'ItineraryController@deleteItineraryData');  
-    Route::get('rearrange/{itiId}/{order}/{dataType}', 'ItineraryController@rearrangeItineraryData');
+    Route::get('day/delete/{date}', 'ItineraryController@deleteDateItineraryData');
+    Route::get('rearrange/{itiId}/{order}/{spotOrder}/{dataType}', 'ItineraryController@rearrangeItineraryData');
     Route::post('get/spot', 'ItinerarySpotController@getItinerarySpotData');
+    Route::post('update/spot/date', 'ItinerarySpotController@updateDate');
     Route::post('get/traffic', 'ItineraryTrafficController@getItineraryTrafficData');
+    Route::post('update/traffic/time', 'ItineraryTrafficController@updateTime');
     Route::post('get/note', 'ItineraryNoteController@getItineraryNoteData');
 });
 
@@ -65,6 +80,7 @@ Route::group(['prefix' => 'planspot'], function(){
 Route::group(['prefix' => 'spot'], function(){
     Route::get('get/types','SpotController@getSpotTypes');
     Route::post('store', 'SpotController@addSpotData');
+    Route::post('getPlanContainingSpot', 'SpotController@getPlanContainingSpot');
 });
 
 Route::group(['prefix' => 'user','middleware' => 'auth:api'], function(){
@@ -81,6 +97,11 @@ Route::group(['prefix' => 'tag'], function(){
     Route::get('get', 'TagController@getTag');
     Route::get('get/{name}', 'TagController@searchTag');
     Route::post('store', 'TagController@addTag');
+});
+
+Route::group(['prefix' => 'member','middleware' => 'auth:api'], function(){
+    Route::get('search/{code}','MemberController@searchJoinPlan');
+    Route::post('store', 'MemberController@joinPlan');
 });
 
 

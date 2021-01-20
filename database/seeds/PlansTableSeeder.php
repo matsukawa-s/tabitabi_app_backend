@@ -15,11 +15,12 @@ class PlansTableSeeder extends Seeder
     {
         for($i = 0;$i < 20;$i++){
             DB::table('plans')->insert([
+                'plan_code' => $i,
                 'title' => 'title'.$i,
                 'description' => 'description'.$i,
                 'start_day' => '2020-1-1',
                 'end_day' => '2020-1-1',
-                'image_url' => 'image_url',
+                'image_url' => 'https://tabitabi-s3.s3.amazonaws.com/plan/thumbnail/2304099_m.jpg',
                 'cost' => 10000,
                 'is_open' => TRUE,
                 'user_id' => 1,

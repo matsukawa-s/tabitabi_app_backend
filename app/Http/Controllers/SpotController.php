@@ -9,6 +9,9 @@ use App\Spot;
 use App\SpotUser;
 use App\Type;
 use App\SpotType;
+use App\Plan;
+use App\Itinerary;
+use App\ItinerarySpot;
 use Validator;
 
 class SpotController extends Controller
@@ -51,6 +54,7 @@ class SpotController extends Controller
         $user = Auth::user();
         $is_favorite = false;
         $spot_id = null;
+        $plans = [];
 
         // スポットテーブルに存在するかチェックする
         // 存在すれば、
@@ -60,11 +64,19 @@ class SpotController extends Controller
             if(SpotUser::where('user_id',$user->id)->where('spot_id',$spot_id)->exists()){
                 $is_favorite = true;
             }
+
+            // 対象のスポットが入っているプランを取得する
+            $itinerary_ids = ItinerarySpot::select(['itinerary_id'])->where('spot_id',$spot_id)->get();
+            // return $itinerary_ids;
+            $plan_ids = Itinerary::select(['plan_id'])->whereIn('id',$itinerary_ids)->get();
+            // return $plan_ids;
+            $plans = Plan::find($plan_ids);
         }
 
         return response()->json([
             'spot_id' => $spot_id,
             'isFavorite' => $is_favorite,
+            'plan_containing_spots' => $plans
         ]);
     }
 
@@ -127,6 +139,11 @@ class SpotController extends Controller
         ],200);
     }
 
+    
+    // public function getPlanContainingSpot(Request $request){
+        // ItinerarySpot
+    // }
+
     /**
      * 場所タイプの情報を取得する
      */
@@ -136,7 +153,7 @@ class SpotController extends Controller
         return $types;
     }
 
-        /**
+    /**
      * IDで指定したスポットを表示する
      * 
      * @param id spot_id
@@ -160,11 +177,12 @@ class SpotController extends Controller
         $plan = Spot::create([
            'place_id' => $input['place_id'],
            'spot_name' => $input['spot_name'],
-           'place_types' => $input['place_types'],
+           //'place_types' => $input['place_types'],
            'memory_latitube' => $input['latitube'],
            'memory_longitube' => $input['longitube'],
-           'image_url' => $input['longitube'],
-           'address' => $input['address'],
+           'image_url' => $input['image_url'],
+           'prefecture_id' => $input['prefecture_id'],
+           //'address' => $input['address'],
         ]);
 
         $id = $plan->id;
