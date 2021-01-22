@@ -37,4 +37,8 @@ class Plan extends Model
     public function scopeOtherPeoplePlan($query){
         return $query->where('user_id','<>',Auth::id());
     }
+
+    public function scopeIsOpenTrue($query){
+        return $query->where('is_open',true);
+    }
 }
