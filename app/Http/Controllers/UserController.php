@@ -40,11 +40,22 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-        ]);
+        $rules = [
+          'name' => 'required',
+          'email' => 'required|email|unique:users',
+          'password' => 'required',
+        ];
+
+        $messages = [
+          'name.required' => 'ユーザーネームを入力してください',
+          'email.required' => 'メールアドレスを入力してください',
+          'email.email' => '有効なメールアドレスではありません',
+          'email.unique' => '入力されたメールアドレスは既に使われています',
+          'password.required' => 'パスワードを入力してください'
+        ];
+
+        $validator = Validator::make($request->all(),$rules,$messages);
+
         if ($validator->fails()) {
           return response()->json([
             'success' => false,

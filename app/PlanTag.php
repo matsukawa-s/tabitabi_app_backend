@@ -14,6 +14,6 @@ class PlanTag extends Model
     ];
 
     public function tag(){
-        return $this->belongTo('App\Tag');
+        return $this->belongsTo('App\Tag');
     }
 }
