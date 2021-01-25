@@ -260,4 +260,16 @@ class PlanController extends Controller
         return $newPlanID;
     }
 
+    public function favoriteStore(Request $request){
+        $plan = Plan::find($request['plan_id']);
+        $plan->users()->attach(Auth::id());
+        return $plan;
+    }
+
+    public function favoriteDelete(Request $request){
+        $plan = Plan::find($request['plan_id']);
+        $plan->users()->detach(Auth::id());
+        return $plan;
+    }
+
 }

@@ -34,6 +34,10 @@ class Plan extends Model
         return $this->belongsToMany('App\Tag');
     }
 
+    public function users(){
+        return $this->belongsToMany('App\User');
+    }
+
     public function scopeOtherPeoplePlan($query){
         return $query->where('user_id','<>',Auth::id());
     }
