@@ -49,6 +49,10 @@ Route::group(['prefix' => 'plan','middleware' => 'auth:api'], function(){
     Route::get('favorite/get','PlanController@getFavoritePlans');
     Route::post('favorite/delete','PlanController@deleteFavoritePlan');
     Route::get('copy/{id}', 'PlanController@copyPlan');
+    Route::get('members/{id}','PlanController@getMembers');
+    Route::post('favorite/store','PlanController@favoriteStore');
+    Route::post('favorite/delete','PlanController@favoriteDelete');
+
 });
 
 Route::group(['prefix' => 'photo','middleware' => 'auth:api'], function(){

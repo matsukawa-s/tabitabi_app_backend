@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Plan;
 use App\PlanUser;
+use App\Member;
 use Auth;
 
 
@@ -40,11 +41,22 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-        ]);
+        $rules = [
+          'name' => 'required',
+          'email' => 'required|email|unique:users',
+          'password' => 'required',
+        ];
+
+        $messages = [
+          'name.required' => 'ユーザーネームを入力してください',
+          'email.required' => 'メールアドレスを入力してください',
+          'email.email' => '有効なメールアドレスではありません',
+          'email.unique' => '入力されたメールアドレスは既に使われています',
+          'password.required' => 'パスワードを入力してください'
+        ];
+
+        $validator = Validator::make($request->all(),$rules,$messages);
+
         if ($validator->fails()) {
           return response()->json([
             'success' => false,
@@ -121,7 +133,7 @@ class UserController extends Controller
        $my_plans = Plan::where('user_id',Auth::id())->orderby('id','desc')->get();
 
        //ユーザーの参加しているプランを取得
-       $participating_plans_keys = PlanUser::select(['plan_id'])->where('user_id',Auth::id())->get();
+       $participating_plans_keys = Member::select(['plan_id'])->where('user_id',Auth::id())->get();
        $participating_plans = Plan::whereIn('id',$participating_plans_keys)->get();
 
       return response()->json([

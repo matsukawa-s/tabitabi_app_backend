@@ -23,7 +23,7 @@ class TopController extends Controller
             ->get();
 
 
-        $popular_plans = Plan::OtherPeoplePlan()
+        $popular_plans = Plan::OpenPlan()
                             ->orderby(DB::raw("favorite_count + number_of_views + referenced_number"),'desc')
                             ->limit(10)
                             ->get();
