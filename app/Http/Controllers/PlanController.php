@@ -278,9 +278,21 @@ class PlanController extends Controller
     }
 
     public function favoriteDelete(Request $request){
-        $plan = Plan::find($request['plan_id']);
-        $plan->users()->detach(Auth::id());
-        return $plan;
+        return DB::transaction(function () use ($request) {
+            $plan = Plan::find($request['plan_id']);
+            $plan->users()->detach(Auth::id());
+            Plan::find($request['plan_id'])->decrement('favorite_count');
+
+            return $plan;
+        });
+    }
+
+
+    /**
+     * 対象プランに参加しているメンバーを返す。
+     */
+    public function getMembers($id){
+        return Plan::find($id)->members()->get();
     }
 
 }

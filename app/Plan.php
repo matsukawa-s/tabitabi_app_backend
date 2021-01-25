@@ -39,11 +39,15 @@ class Plan extends Model
         return $this->belongsToMany('App\User');
     }
 
+    public function members(){
+        return $this->belongsToMany('App\User','members');
+    }
+
     public function scopeOtherPeoplePlan($query){
         return $query->where('user_id','<>',Auth::id());
     }
 
-    public function scopeIsOpenTrue($query){
+    public function scopeIsOpenPlan($query){
         return $query->where('is_open',true);
     }
 }
