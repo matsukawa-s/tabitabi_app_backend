@@ -166,6 +166,48 @@ class SpotController extends Controller
     }
 
     /**
+     * スポット登録されてなかった登録する
+     * 
+     * @param request
+     * @return json
+     */
+    public function addIfSpot(Request $request){
+        $input = $request->all();
+
+        // スポットが登録されいなければ登録する
+        if(is_null($input["spot_id"])){
+            $spot_id = DB::transaction(function () use($input){
+                // スポットを新規登録
+                $spot = Spot::create([
+                    'place_id' => $input['place_id'],
+                    'spot_name' => $input['name'],
+                    'memory_latitube' => $input['lat'],
+                    'memory_longitube' => $input['lng'],
+                    'image_url' => $input['photo'],
+                    'prefecture_id' => $input['prefecture_id']
+                ]);
+
+                // スポットのタイプを新規登録
+                $types = Type::whereIn('english_name',$input["types"])->get();
+
+                foreach($types as $type){
+                    SpotType::create([
+                        "type_id" => $type->id,
+                        "spot_id" => $spot->id
+                    ]);
+                }
+
+                // スポットIDを登録したIDに更新
+                return $spot->id;
+            });
+        }else{
+            $spot_id = $input['spot_id'];
+        }
+
+        return $spot_id;
+    }
+
+    /**
      * スポット登録
      *
      *@param request 

@@ -80,9 +80,15 @@ Route::group(['prefix' => 'planspot'], function(){
     Route::get('delete/{id}', 'PlanSpotController@deletePlanSpotData');
 });
 
+Route::group(['prefix' => 'review','middleware' => 'auth:api'], function(){
+    Route::get('get/{id}', 'ReviewController@getReview');
+    Route::post('store', 'ReviewController@addReview');
+});
+
 Route::group(['prefix' => 'spot'], function(){
     Route::get('get/types','SpotController@getSpotTypes');
     Route::post('store', 'SpotController@addSpotData');
+    Route::post('store/if', 'SpotController@addIfSpot');
     Route::post('getPlanContainingSpot', 'SpotController@getPlanContainingSpot');
 });
 
@@ -100,6 +106,11 @@ Route::group(['prefix' => 'tag'], function(){
     Route::get('get', 'TagController@getTag');
     Route::get('get/{name}', 'TagController@searchTag');
     Route::post('store', 'TagController@addTag');
+});
+
+Route::group(['prefix' => 'comment','middleware' => 'auth:api'], function(){
+    Route::get('get/{id}', 'CommentController@getComment');
+    Route::post('store', 'CommentController@addComment');
 });
 
 Route::group(['prefix' => 'member','middleware' => 'auth:api'], function(){

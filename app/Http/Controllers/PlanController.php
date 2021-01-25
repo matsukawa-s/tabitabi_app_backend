@@ -33,6 +33,12 @@ class PlanController extends Controller
             $userFlag = 1;
         }
 
+        //閲覧数あげる
+        if($userFlag == 0){
+            $plan->number_of_views = $plan->number_of_views + 1;
+            $plan->save();
+        }
+
         $tags = [];
         $tagId = [];
         $tagData = $plan->tag;
@@ -43,6 +49,7 @@ class PlanController extends Controller
         foreach($tagData2 as $tag){
             $tagId [] = $tag["id"];
         }
+
         
         $data [] = [
             'id' => $plan->id,
@@ -189,6 +196,10 @@ class PlanController extends Controller
 
         //コピー元のプラン取得
         $plan = Plan::find($id);
+
+        //コピー元プランのコピー回数をふやす
+        $plan->referenced_number = $plan->referenced_number + 1;
+        $plan->save();
 
         //コピー先プラン作成
         $newPlan = Plan::create([
