@@ -19,7 +19,7 @@ class SearchController extends Controller
      * @return json
      */
     public function index(Request $request){
-        $plan_query = Plan::query();
+        $plan_query = Plan::OpenPlan();
         $input = $request->all();
         $user_id = Auth::id();
         // $user_id = 1;
@@ -45,7 +45,7 @@ class SearchController extends Controller
 
     public function search(Request $request, $keyword)
     {
-        $plan_query = Plan::query();
+        $plan_query = Plan::OpenPlan();
         $input = $request->all();
         $user_id = Auth::id();
 
@@ -72,7 +72,7 @@ class SearchController extends Controller
     }
 
     public function tagSearch(Request $request, $keyword){
-        $plan_query = Plan::query();
+        $plan_query = Plan::OpenPlan();
         $input = $request->all();
         $user_id = Auth::id();
 

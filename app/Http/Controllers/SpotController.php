@@ -70,7 +70,7 @@ class SpotController extends Controller
             // return $itinerary_ids;
             $plan_ids = Itinerary::select(['plan_id'])->whereIn('id',$itinerary_ids)->get();
             // return $plan_ids;
-            $plans = Plan::find($plan_ids);
+            $plans = Plan::OpenPlan()->whereIn('id',$plan_ids)->get();
         }
 
         return response()->json([
