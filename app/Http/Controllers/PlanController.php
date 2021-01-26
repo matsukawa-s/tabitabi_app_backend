@@ -12,6 +12,7 @@ use App\Itinerary;
 use App\ItinerarySpot;
 use App\ItineraryTraffic;
 use App\ItineraryNote;
+use App\Member;
 
 class PlanController extends Controller
 {
@@ -31,6 +32,13 @@ class PlanController extends Controller
         $userFlag = 0;
         if($userId == $plan->user_id){
             $userFlag = 1;
+        }
+        
+        $member = Member::where("plan_id", $id)->get();
+        foreach($member as $people){
+            if($people->user_id == $userId){
+                $userFlag = 1;
+            }
         }
 
         //閲覧数あげる

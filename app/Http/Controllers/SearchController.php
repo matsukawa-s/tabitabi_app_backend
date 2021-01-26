@@ -19,9 +19,10 @@ class SearchController extends Controller
      * @return json
      */
     public function index(Request $request){
-        $plan_query = Plan::OpenPlan();
-        $input = $request->all();
         $user_id = Auth::id();
+        $plan_query = Plan::OpenPlan()->where("user_id","!=",$user_id);
+        $input = $request->all();
+    
         // $user_id = 1;
 
         // 並び替えのリクエストがあるとき
@@ -37,6 +38,8 @@ class SearchController extends Controller
                     ->where('plan_id', $plan['id'])
                     ->first();
             $plan['islike'] = $flag == null ? false :true;
+            $plan['user'] = $plan->user;
+            $plan['tags'] = $plan->tag;
         }
         
         // return response()->json($plans);
@@ -45,9 +48,10 @@ class SearchController extends Controller
 
     public function search(Request $request, $keyword)
     {
-        $plan_query = Plan::OpenPlan();
-        $input = $request->all();
         $user_id = Auth::id();
+
+        $plan_query = Plan::OpenPlan()->where("user_id","!=",$user_id);
+        $input = $request->all();
 
         // 検索キーワードで絞り込み
         $plan_query->where('title', 'LIKE', "%{$keyword}%")->get();
@@ -72,9 +76,9 @@ class SearchController extends Controller
     }
 
     public function tagSearch(Request $request, $keyword){
-        $plan_query = Plan::OpenPlan();
-        $input = $request->all();
         $user_id = Auth::id();
+        $plan_query = Plan::OpenPlan()->where("user_id","!=",$user_id);
+        $input = $request->all();
 
         // 検索キーワードのタグがあるか
         $tag = Tag::where('tag_name', 'like', "{$keyword}");
@@ -132,7 +136,7 @@ class SearchController extends Controller
     // プランのお気に入り更新
     public function update(Request $request){
         $planId = $request->input('favorite_plan_id');
-        $userId = $request->input('user_id');
+        $userId = Auth::id();
         $favoritePlan = PlanUser::where('plan_id',$planId)->where('user_id',$userId)->first();
         $planUser = new PlanUser;
 
