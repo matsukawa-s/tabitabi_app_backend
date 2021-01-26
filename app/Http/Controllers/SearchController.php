@@ -70,6 +70,8 @@ class SearchController extends Controller
                     ->where('plan_id', $plan['id'])
                     ->first();
             $plan['islike'] = $flag == null ? false :true;
+            $plan['user'] = $plan->user;
+            $plan['tags'] = $plan->tag;
         }
 
         return response()->json($plans);
@@ -104,6 +106,8 @@ class SearchController extends Controller
                     ->where('plan_id', $plan['id'])
                     ->first();
             $plan['islike'] = $flag == null ? false :true;
+            $plan['user'] = $plan->user;
+            $plan['tags'] = $plan->tag;
         }
 
         // return $keyword;

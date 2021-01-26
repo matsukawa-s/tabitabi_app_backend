@@ -51,7 +51,7 @@ class TagController extends Controller
 
         $data = Tag::where('tag_name', $input['tag_name'])->first();
 
-        if((string)$data === "[]"){
+        if(is_null($data)){
             $newtag = Tag::create([
                 'tag_name' => $input['tag_name'],
             ]);
