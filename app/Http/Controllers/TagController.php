@@ -49,7 +49,7 @@ class TagController extends Controller
     public function addTag(Request $request){
         $input = $request->all();
 
-        $data = Tag::where('tag_name', $input['tag_name'])->get();
+        $data = Tag::where('tag_name', $input['tag_name'])->first();
 
         if((string)$data === "[]"){
             $newtag = Tag::create([

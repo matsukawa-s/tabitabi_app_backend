@@ -103,8 +103,8 @@ Route::group(['prefix' => 'top','middleware' => 'auth:api'], function(){
     Route::get('/','TopController@index');
 });
 
-Route::group(['prefix' => 'tag'], function(){
-    Route::get('get', 'TagController@getTag');
+Route::group(['prefix' => 'tag','middleware' => 'auth:api'], function(){
+    Route::get('all/get', 'TagController@getTag');
     Route::get('get/{name}', 'TagController@searchTag');
     Route::post('store', 'TagController@addTag');
 });
