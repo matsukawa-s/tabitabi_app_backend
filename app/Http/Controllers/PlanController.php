@@ -280,9 +280,13 @@ class PlanController extends Controller
     }
 
     public function favoriteStore(Request $request){
-        $plan = Plan::find($request['plan_id']);
-        $plan->users()->attach(Auth::id());
-        return $plan;
+        return DB::transaction(function () use ($request) {
+            $plan = Plan::find($request['plan_id']);
+            $plan->users()->attach(Auth::id());
+            Plan::find($request['plan_id'])->increment('favorite_count');
+
+            return $plan;
+        });
     }
 
     public function favoriteDelete(Request $request){
