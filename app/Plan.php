@@ -30,7 +30,6 @@ class Plan extends Model
         return $this->hasMany('App\PlanTag');
     }
 
-
     public function tag(){
         return $this->belongsToMany('App\Tag');
     }

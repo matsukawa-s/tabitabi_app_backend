@@ -282,6 +282,10 @@ class PlanController extends Controller
     public function favoriteStore(Request $request){
         return DB::transaction(function () use ($request) {
             $plan = Plan::find($request['plan_id']);
+
+            if($plan->users()->exists()){
+                return false;
+            }
             $plan->users()->attach(Auth::id());
             Plan::find($request['plan_id'])->increment('favorite_count');
 
@@ -298,7 +302,6 @@ class PlanController extends Controller
             return $plan;
         });
     }
-
 
     /**
      * 対象プランに参加しているメンバーを返す。

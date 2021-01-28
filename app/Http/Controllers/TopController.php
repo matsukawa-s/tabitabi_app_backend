@@ -32,7 +32,7 @@ class TopController extends Controller
         $popular_spots_keys = ItinerarySpot::select('spot_id')
             ->groupBy('spot_id')
             ->orderby(DB::raw('count(*)'),'desc')
-            ->limit(10)
+            ->limit(7)
             ->get();
 
         if($popular_spots_keys->isEmpty()){
@@ -67,7 +67,7 @@ class TopController extends Controller
 
         // 都道府県ごとのスポットを取得
         $prefectures_spots = Prefectures::with('spots')
-            ->whereIn('id',[1,13,26,27,47])->get();
+            ->whereIn('id',[1,9,13,14,26,27,29,40,47])->get();
 
         return response()->json([
             "today_plans" => $today_plans,

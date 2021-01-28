@@ -40,7 +40,7 @@ class MemberController extends Controller
         $plan = Plan::where('plan_code',$input["plan_code"])->first();
 
         // プランが存在するか確認する
-        if(!isset($plan)){
+        if($plan == null){
             return response()->json([
                 'message' => 'プランが見つかりませんでした'
             ]);
